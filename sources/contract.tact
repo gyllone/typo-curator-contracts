@@ -1,13 +1,16 @@
 import "@stdlib/deploy";
+import "./data";
 import "./deposit_vault";
 import "./deposit_account";
 import "./withdraw_vault";
 import "./withdraw_account";
+import "./badge_collection";
+import "./badge_item";
 
 // === Deposit Vault Contract === //
 
 contract DepositVault with BaseDepositVault, Deployable {
-    override const storageReserve: Int = ton("0.05");
+    override const storageReserve: Int = ton("0.1");
 
     // from BaseDepositVault
     owner: Address; // from OwnableTransferable
@@ -18,8 +21,8 @@ contract DepositVault with BaseDepositVault, Deployable {
     claimed_bonus_amount: Int as coins = 0;
 
     active: Bool = true;
-    min_claim_amount: Int as coins = 1000000;
-    bonus_percentage: Int as uint8 = 5; // 5%
+    min_claim_amount: Int as coins = 1;
+    bonus_percentage: Int as uint8 = 3; // 3%
     // ============================
 
     init(owner: Address, jetton_master: Address, jetton_wallet_code: Cell) {
@@ -36,7 +39,7 @@ contract DepositVault with BaseDepositVault, Deployable {
 // === Deposit Account Contract === //
 
 contract DepositAccount with BaseDepositAccount, Deployable {
-    override const storageReserve: Int = ton("0.01");
+    override const storageReserve: Int = ton("0.05");
 
     // from BaseDepositAccount
     owner: Address; // from Ownable
@@ -60,7 +63,7 @@ contract DepositAccount with BaseDepositAccount, Deployable {
 // === Withdraw Vault Contract === //
 
 contract WithdrawVault with BaseWithdrawVault, Deployable {
-    override const storageReserve: Int = ton("0.05");
+    override const storageReserve: Int = ton("0.1");
 
     // from BaseWithdrawVault
     owner: Address; // from OwnableTransferable
@@ -88,7 +91,7 @@ contract WithdrawVault with BaseWithdrawVault, Deployable {
 // === Withdraw Account Contract === //
 
 contract WithdrawAccount with BaseWithdrawAccount, Deployable {
-    override const storageReserve: Int = ton("0.01");
+    override const storageReserve: Int = ton("0.03");
 
     // from BaseAccount
     owner: Address; // from Ownable
@@ -104,5 +107,29 @@ contract WithdrawAccount with BaseWithdrawAccount, Deployable {
 
     override inline fun _get_account_state_init(owner: Address): StateInit {
         return initOf WithdrawAccount(owner, self.vault);
+    }
+}
+
+// === Badge Collection Contract === //
+
+contract BadgeCollection with BaseBadgeCollection, Deployable {
+    override const storageReserve: Int = ton("0.1");
+
+    // from BaseBadgeCollection
+    owner: Address; // from OwnableTransferrable
+
+    next_item_index: Int as uint64 = 0;                 
+    content: Cell;
+
+    pubkey: Int = 0;
+    // ============================
+
+    init(owner: Address, content: Cell) {
+        self.owner = owner;
+        self.content = content;
+    }
+
+    override inline fun _get_account_init(owner: Address): StateInit {
+        return initOf BadgeItem(owner, myAddress());
     }
 }

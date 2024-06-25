@@ -24,12 +24,18 @@ trait BaseWithdrawVault with OwnableTransferable {
         if (msg.pubkey != null) {
             self.pubkey = msg.pubkey!!;
         }
+
+        // refund gas
+        self.notify(null);
     }
 
     receive(msg: JettonNotification) {
         require(sender() == self._get_jetton_wallet_address(), "Only jetton wallet");
 
         self.jetton_amount += msg.amount;
+
+        // refund gas
+        self.forward(msg.from, null, false, null);
     }
 
     receive(msg: WithdrawInternal) {
@@ -74,4 +80,8 @@ trait BaseWithdrawVault with OwnableTransferable {
     }
 
     abstract inline fun _get_account_init(owner: Address): StateInit;
+
+    // === Getters ===
+
+    
 }

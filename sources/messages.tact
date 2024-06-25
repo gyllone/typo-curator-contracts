@@ -68,3 +68,97 @@ message(0xf8a7ea5) JettonTransfer {
     forward_ton_amount: Int as coins;
     forward_payload: Slice as remaining;
 }
+
+// === NFT Collection Messages ===
+
+message MintBadgeItem {
+    index: Int as uint64;
+    owner: Address;
+    authority: Address;
+    content: Cell;
+    signature: Slice as remaining;
+}
+
+message SetBadgeCollectionPubkey {
+    pubkey: Int;
+}
+
+// === NFT Item Messages ===
+
+message MintBadgeItemInternal {
+    owner: Address;
+    content: Cell;
+    authority: Address;
+}
+
+message(0xd0c3bfea) RequestOwner {
+    query_id: Int as uint64;
+    dest: Address;
+    forward_payload: Cell;
+    with_content: Bool;
+}
+
+message(0x0dd607e3) OwnerInfo {
+    query_id: Int as uint64;
+    item_id: Int as uint256;
+    initiator: Address;
+    owner: Address;
+    data: Cell;
+    revoked_at: Int as uint64;
+    content: Cell?;
+}
+
+message(0x04ded148) ProveOwnership {
+    query_id: Int as uint64;
+    dest: Address;
+    forward_payload: Cell;
+    with_content: Bool;
+}
+
+message(0x0524c7ae) OwnershipProof {
+    query_id: Int as uint64;
+    item_id: Int as uint256;
+    owner: Address;
+    data: Cell;
+    revoked_at: Int as uint64;
+    content: Cell?;
+}
+
+message(0x2fcb26a2) GetStaticData { 
+    query_id: Int as uint64;
+}
+
+message(0x8b771735) ReportStaticData {
+    query_id: Int as uint64;
+    index_id: Int;
+    collection: Address;
+}
+
+message(0x1f04537a) Destroy {
+    query_id: Int as uint64;
+}
+
+message(0xd53276db) Excesses {
+    query_id: Int as uint64;
+}
+
+message(0x6f89f5e3) Revoke {
+    query_id: Int as uint64;
+}
+
+message(0xd136d3b3) TakeExcess {
+    query_id: Int as uint64;
+}
+
+message(0x5fcc3d14) TransferItem {
+    query_id: Int as uint64;
+    new_owner: Address;
+    response_destination: Address;
+    custom_payload: Cell?;
+    forward_amount: Int as coins;
+    forward_payload: Slice as remaining;
+}
+
+message(0xc18e86d2) OwnershipProofBounced {
+    query_id: Int as uint64;
+}

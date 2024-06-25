@@ -80,6 +80,9 @@ trait BaseDepositVault with OwnableTransferable {
         if (msg.bonus_percentage != null) {
             self.bonus_percentage = msg.bonus_percentage!!;
         }
+
+        // refund gas
+        self.notify(null);
     }
 
     inline fun _get_jetton_wallet_address(): Address {
@@ -97,4 +100,7 @@ trait BaseDepositVault with OwnableTransferable {
     }
 
     abstract inline fun _get_account_init(owner: Address): StateInit;
+
+    // === GETTERS ===
+    
 }
