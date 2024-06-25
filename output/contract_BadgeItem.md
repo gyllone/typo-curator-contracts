@@ -1,6 +1,6 @@
 # TACT Compilation Report
-Contract: DepositVault
-BOC Size: 2653 bytes
+Contract: BadgeItem
+BOC Size: 2402 bytes
 
 # Types
 Total Types: 34
@@ -142,9 +142,13 @@ TLB: `ownership_proof_bounced#c18e86d2 query_id:uint64 = OwnershipProofBounced`
 Signature: `OwnershipProofBounced{query_id:uint64}`
 
 # Get Methods
-Total Get Methods: 1
+Total Get Methods: 3
 
-## owner
+## get_nft_data
+
+## get_authority_address
+
+## get_revoked_time
 
 # Error Codes
 2: Stack underflow

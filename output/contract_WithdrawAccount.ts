@@ -321,6 +321,116 @@ function dictValueParserFactoryDeploy(): DictionaryValue<FactoryDeploy> {
     }
 }
 
+export type CollectionData = {
+    $$type: 'CollectionData';
+    next_item_index: bigint;
+    content: Cell;
+    owner: Address;
+}
+
+export function storeCollectionData(src: CollectionData) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeInt(src.next_item_index, 257);
+        b_0.storeRef(src.content);
+        b_0.storeAddress(src.owner);
+    };
+}
+
+export function loadCollectionData(slice: Slice) {
+    let sc_0 = slice;
+    let _next_item_index = sc_0.loadIntBig(257);
+    let _content = sc_0.loadRef();
+    let _owner = sc_0.loadAddress();
+    return { $$type: 'CollectionData' as const, next_item_index: _next_item_index, content: _content, owner: _owner };
+}
+
+function loadTupleCollectionData(source: TupleReader) {
+    let _next_item_index = source.readBigNumber();
+    let _content = source.readCell();
+    let _owner = source.readAddress();
+    return { $$type: 'CollectionData' as const, next_item_index: _next_item_index, content: _content, owner: _owner };
+}
+
+function storeTupleCollectionData(source: CollectionData) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.next_item_index);
+    builder.writeCell(source.content);
+    builder.writeAddress(source.owner);
+    return builder.build();
+}
+
+function dictValueParserCollectionData(): DictionaryValue<CollectionData> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeCollectionData(src)).endCell());
+        },
+        parse: (src) => {
+            return loadCollectionData(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type NftData = {
+    $$type: 'NftData';
+    initialized: boolean;
+    index: bigint;
+    collection: Address;
+    owner: Address | null;
+    individual_content: Cell;
+}
+
+export function storeNftData(src: NftData) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeBit(src.initialized);
+        b_0.storeInt(src.index, 257);
+        b_0.storeAddress(src.collection);
+        b_0.storeAddress(src.owner);
+        b_0.storeRef(src.individual_content);
+    };
+}
+
+export function loadNftData(slice: Slice) {
+    let sc_0 = slice;
+    let _initialized = sc_0.loadBit();
+    let _index = sc_0.loadIntBig(257);
+    let _collection = sc_0.loadAddress();
+    let _owner = sc_0.loadMaybeAddress();
+    let _individual_content = sc_0.loadRef();
+    return { $$type: 'NftData' as const, initialized: _initialized, index: _index, collection: _collection, owner: _owner, individual_content: _individual_content };
+}
+
+function loadTupleNftData(source: TupleReader) {
+    let _initialized = source.readBoolean();
+    let _index = source.readBigNumber();
+    let _collection = source.readAddress();
+    let _owner = source.readAddressOpt();
+    let _individual_content = source.readCell();
+    return { $$type: 'NftData' as const, initialized: _initialized, index: _index, collection: _collection, owner: _owner, individual_content: _individual_content };
+}
+
+function storeTupleNftData(source: NftData) {
+    let builder = new TupleBuilder();
+    builder.writeBoolean(source.initialized);
+    builder.writeNumber(source.index);
+    builder.writeAddress(source.collection);
+    builder.writeAddress(source.owner);
+    builder.writeCell(source.individual_content);
+    return builder.build();
+}
+
+function dictValueParserNftData(): DictionaryValue<NftData> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeNftData(src)).endCell());
+        },
+        parse: (src) => {
+            return loadNftData(src.loadRef().beginParse());
+        }
+    }
+}
+
 export type ChangeOwner = {
     $$type: 'ChangeOwner';
     queryId: bigint;
@@ -908,6 +1018,786 @@ function dictValueParserJettonTransfer(): DictionaryValue<JettonTransfer> {
     }
 }
 
+export type MintBadgeItem = {
+    $$type: 'MintBadgeItem';
+    index: bigint;
+    owner: Address;
+    authority: Address;
+    content: Cell;
+    signature: Cell;
+}
+
+export function storeMintBadgeItem(src: MintBadgeItem) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(2527069138, 32);
+        b_0.storeUint(src.index, 64);
+        b_0.storeAddress(src.owner);
+        b_0.storeAddress(src.authority);
+        b_0.storeRef(src.content);
+        b_0.storeBuilder(src.signature.asBuilder());
+    };
+}
+
+export function loadMintBadgeItem(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2527069138) { throw Error('Invalid prefix'); }
+    let _index = sc_0.loadUintBig(64);
+    let _owner = sc_0.loadAddress();
+    let _authority = sc_0.loadAddress();
+    let _content = sc_0.loadRef();
+    let _signature = sc_0.asCell();
+    return { $$type: 'MintBadgeItem' as const, index: _index, owner: _owner, authority: _authority, content: _content, signature: _signature };
+}
+
+function loadTupleMintBadgeItem(source: TupleReader) {
+    let _index = source.readBigNumber();
+    let _owner = source.readAddress();
+    let _authority = source.readAddress();
+    let _content = source.readCell();
+    let _signature = source.readCell();
+    return { $$type: 'MintBadgeItem' as const, index: _index, owner: _owner, authority: _authority, content: _content, signature: _signature };
+}
+
+function storeTupleMintBadgeItem(source: MintBadgeItem) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.index);
+    builder.writeAddress(source.owner);
+    builder.writeAddress(source.authority);
+    builder.writeCell(source.content);
+    builder.writeSlice(source.signature);
+    return builder.build();
+}
+
+function dictValueParserMintBadgeItem(): DictionaryValue<MintBadgeItem> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeMintBadgeItem(src)).endCell());
+        },
+        parse: (src) => {
+            return loadMintBadgeItem(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type SetBadgeCollectionPubkey = {
+    $$type: 'SetBadgeCollectionPubkey';
+    pubkey: bigint;
+}
+
+export function storeSetBadgeCollectionPubkey(src: SetBadgeCollectionPubkey) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(2736126250, 32);
+        b_0.storeInt(src.pubkey, 257);
+    };
+}
+
+export function loadSetBadgeCollectionPubkey(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2736126250) { throw Error('Invalid prefix'); }
+    let _pubkey = sc_0.loadIntBig(257);
+    return { $$type: 'SetBadgeCollectionPubkey' as const, pubkey: _pubkey };
+}
+
+function loadTupleSetBadgeCollectionPubkey(source: TupleReader) {
+    let _pubkey = source.readBigNumber();
+    return { $$type: 'SetBadgeCollectionPubkey' as const, pubkey: _pubkey };
+}
+
+function storeTupleSetBadgeCollectionPubkey(source: SetBadgeCollectionPubkey) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.pubkey);
+    return builder.build();
+}
+
+function dictValueParserSetBadgeCollectionPubkey(): DictionaryValue<SetBadgeCollectionPubkey> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeSetBadgeCollectionPubkey(src)).endCell());
+        },
+        parse: (src) => {
+            return loadSetBadgeCollectionPubkey(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type MintBadgeItemInternal = {
+    $$type: 'MintBadgeItemInternal';
+    owner: Address;
+    content: Cell;
+    authority: Address;
+}
+
+export function storeMintBadgeItemInternal(src: MintBadgeItemInternal) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(14157336, 32);
+        b_0.storeAddress(src.owner);
+        b_0.storeRef(src.content);
+        b_0.storeAddress(src.authority);
+    };
+}
+
+export function loadMintBadgeItemInternal(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 14157336) { throw Error('Invalid prefix'); }
+    let _owner = sc_0.loadAddress();
+    let _content = sc_0.loadRef();
+    let _authority = sc_0.loadAddress();
+    return { $$type: 'MintBadgeItemInternal' as const, owner: _owner, content: _content, authority: _authority };
+}
+
+function loadTupleMintBadgeItemInternal(source: TupleReader) {
+    let _owner = source.readAddress();
+    let _content = source.readCell();
+    let _authority = source.readAddress();
+    return { $$type: 'MintBadgeItemInternal' as const, owner: _owner, content: _content, authority: _authority };
+}
+
+function storeTupleMintBadgeItemInternal(source: MintBadgeItemInternal) {
+    let builder = new TupleBuilder();
+    builder.writeAddress(source.owner);
+    builder.writeCell(source.content);
+    builder.writeAddress(source.authority);
+    return builder.build();
+}
+
+function dictValueParserMintBadgeItemInternal(): DictionaryValue<MintBadgeItemInternal> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeMintBadgeItemInternal(src)).endCell());
+        },
+        parse: (src) => {
+            return loadMintBadgeItemInternal(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type RequestOwner = {
+    $$type: 'RequestOwner';
+    query_id: bigint;
+    dest: Address;
+    forward_payload: Cell;
+    with_content: boolean;
+}
+
+export function storeRequestOwner(src: RequestOwner) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(3502489578, 32);
+        b_0.storeUint(src.query_id, 64);
+        b_0.storeAddress(src.dest);
+        b_0.storeRef(src.forward_payload);
+        b_0.storeBit(src.with_content);
+    };
+}
+
+export function loadRequestOwner(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 3502489578) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    let _dest = sc_0.loadAddress();
+    let _forward_payload = sc_0.loadRef();
+    let _with_content = sc_0.loadBit();
+    return { $$type: 'RequestOwner' as const, query_id: _query_id, dest: _dest, forward_payload: _forward_payload, with_content: _with_content };
+}
+
+function loadTupleRequestOwner(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    let _dest = source.readAddress();
+    let _forward_payload = source.readCell();
+    let _with_content = source.readBoolean();
+    return { $$type: 'RequestOwner' as const, query_id: _query_id, dest: _dest, forward_payload: _forward_payload, with_content: _with_content };
+}
+
+function storeTupleRequestOwner(source: RequestOwner) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    builder.writeAddress(source.dest);
+    builder.writeCell(source.forward_payload);
+    builder.writeBoolean(source.with_content);
+    return builder.build();
+}
+
+function dictValueParserRequestOwner(): DictionaryValue<RequestOwner> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeRequestOwner(src)).endCell());
+        },
+        parse: (src) => {
+            return loadRequestOwner(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type OwnerInfo = {
+    $$type: 'OwnerInfo';
+    query_id: bigint;
+    item_id: bigint;
+    initiator: Address;
+    owner: Address;
+    data: Cell;
+    revoked_at: bigint;
+    content: Cell | null;
+}
+
+export function storeOwnerInfo(src: OwnerInfo) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(232130531, 32);
+        b_0.storeUint(src.query_id, 64);
+        b_0.storeUint(src.item_id, 256);
+        b_0.storeAddress(src.initiator);
+        b_0.storeAddress(src.owner);
+        b_0.storeRef(src.data);
+        b_0.storeUint(src.revoked_at, 64);
+        if (src.content !== null && src.content !== undefined) { b_0.storeBit(true).storeRef(src.content); } else { b_0.storeBit(false); }
+    };
+}
+
+export function loadOwnerInfo(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 232130531) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    let _item_id = sc_0.loadUintBig(256);
+    let _initiator = sc_0.loadAddress();
+    let _owner = sc_0.loadAddress();
+    let _data = sc_0.loadRef();
+    let _revoked_at = sc_0.loadUintBig(64);
+    let _content = sc_0.loadBit() ? sc_0.loadRef() : null;
+    return { $$type: 'OwnerInfo' as const, query_id: _query_id, item_id: _item_id, initiator: _initiator, owner: _owner, data: _data, revoked_at: _revoked_at, content: _content };
+}
+
+function loadTupleOwnerInfo(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    let _item_id = source.readBigNumber();
+    let _initiator = source.readAddress();
+    let _owner = source.readAddress();
+    let _data = source.readCell();
+    let _revoked_at = source.readBigNumber();
+    let _content = source.readCellOpt();
+    return { $$type: 'OwnerInfo' as const, query_id: _query_id, item_id: _item_id, initiator: _initiator, owner: _owner, data: _data, revoked_at: _revoked_at, content: _content };
+}
+
+function storeTupleOwnerInfo(source: OwnerInfo) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    builder.writeNumber(source.item_id);
+    builder.writeAddress(source.initiator);
+    builder.writeAddress(source.owner);
+    builder.writeCell(source.data);
+    builder.writeNumber(source.revoked_at);
+    builder.writeCell(source.content);
+    return builder.build();
+}
+
+function dictValueParserOwnerInfo(): DictionaryValue<OwnerInfo> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeOwnerInfo(src)).endCell());
+        },
+        parse: (src) => {
+            return loadOwnerInfo(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type ProveOwnership = {
+    $$type: 'ProveOwnership';
+    query_id: bigint;
+    dest: Address;
+    forward_payload: Cell;
+    with_content: boolean;
+}
+
+export function storeProveOwnership(src: ProveOwnership) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(81711432, 32);
+        b_0.storeUint(src.query_id, 64);
+        b_0.storeAddress(src.dest);
+        b_0.storeRef(src.forward_payload);
+        b_0.storeBit(src.with_content);
+    };
+}
+
+export function loadProveOwnership(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 81711432) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    let _dest = sc_0.loadAddress();
+    let _forward_payload = sc_0.loadRef();
+    let _with_content = sc_0.loadBit();
+    return { $$type: 'ProveOwnership' as const, query_id: _query_id, dest: _dest, forward_payload: _forward_payload, with_content: _with_content };
+}
+
+function loadTupleProveOwnership(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    let _dest = source.readAddress();
+    let _forward_payload = source.readCell();
+    let _with_content = source.readBoolean();
+    return { $$type: 'ProveOwnership' as const, query_id: _query_id, dest: _dest, forward_payload: _forward_payload, with_content: _with_content };
+}
+
+function storeTupleProveOwnership(source: ProveOwnership) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    builder.writeAddress(source.dest);
+    builder.writeCell(source.forward_payload);
+    builder.writeBoolean(source.with_content);
+    return builder.build();
+}
+
+function dictValueParserProveOwnership(): DictionaryValue<ProveOwnership> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeProveOwnership(src)).endCell());
+        },
+        parse: (src) => {
+            return loadProveOwnership(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type OwnershipProof = {
+    $$type: 'OwnershipProof';
+    query_id: bigint;
+    item_id: bigint;
+    owner: Address;
+    data: Cell;
+    revoked_at: bigint;
+    content: Cell | null;
+}
+
+export function storeOwnershipProof(src: OwnershipProof) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(86296494, 32);
+        b_0.storeUint(src.query_id, 64);
+        b_0.storeUint(src.item_id, 256);
+        b_0.storeAddress(src.owner);
+        b_0.storeRef(src.data);
+        b_0.storeUint(src.revoked_at, 64);
+        if (src.content !== null && src.content !== undefined) { b_0.storeBit(true).storeRef(src.content); } else { b_0.storeBit(false); }
+    };
+}
+
+export function loadOwnershipProof(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 86296494) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    let _item_id = sc_0.loadUintBig(256);
+    let _owner = sc_0.loadAddress();
+    let _data = sc_0.loadRef();
+    let _revoked_at = sc_0.loadUintBig(64);
+    let _content = sc_0.loadBit() ? sc_0.loadRef() : null;
+    return { $$type: 'OwnershipProof' as const, query_id: _query_id, item_id: _item_id, owner: _owner, data: _data, revoked_at: _revoked_at, content: _content };
+}
+
+function loadTupleOwnershipProof(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    let _item_id = source.readBigNumber();
+    let _owner = source.readAddress();
+    let _data = source.readCell();
+    let _revoked_at = source.readBigNumber();
+    let _content = source.readCellOpt();
+    return { $$type: 'OwnershipProof' as const, query_id: _query_id, item_id: _item_id, owner: _owner, data: _data, revoked_at: _revoked_at, content: _content };
+}
+
+function storeTupleOwnershipProof(source: OwnershipProof) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    builder.writeNumber(source.item_id);
+    builder.writeAddress(source.owner);
+    builder.writeCell(source.data);
+    builder.writeNumber(source.revoked_at);
+    builder.writeCell(source.content);
+    return builder.build();
+}
+
+function dictValueParserOwnershipProof(): DictionaryValue<OwnershipProof> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeOwnershipProof(src)).endCell());
+        },
+        parse: (src) => {
+            return loadOwnershipProof(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type GetStaticData = {
+    $$type: 'GetStaticData';
+    query_id: bigint;
+}
+
+export function storeGetStaticData(src: GetStaticData) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(801842850, 32);
+        b_0.storeUint(src.query_id, 64);
+    };
+}
+
+export function loadGetStaticData(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 801842850) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    return { $$type: 'GetStaticData' as const, query_id: _query_id };
+}
+
+function loadTupleGetStaticData(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    return { $$type: 'GetStaticData' as const, query_id: _query_id };
+}
+
+function storeTupleGetStaticData(source: GetStaticData) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    return builder.build();
+}
+
+function dictValueParserGetStaticData(): DictionaryValue<GetStaticData> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeGetStaticData(src)).endCell());
+        },
+        parse: (src) => {
+            return loadGetStaticData(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type ReportStaticData = {
+    $$type: 'ReportStaticData';
+    query_id: bigint;
+    index_id: bigint;
+    collection: Address;
+}
+
+export function storeReportStaticData(src: ReportStaticData) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(2339837749, 32);
+        b_0.storeUint(src.query_id, 64);
+        b_0.storeInt(src.index_id, 257);
+        b_0.storeAddress(src.collection);
+    };
+}
+
+export function loadReportStaticData(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2339837749) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    let _index_id = sc_0.loadIntBig(257);
+    let _collection = sc_0.loadAddress();
+    return { $$type: 'ReportStaticData' as const, query_id: _query_id, index_id: _index_id, collection: _collection };
+}
+
+function loadTupleReportStaticData(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    let _index_id = source.readBigNumber();
+    let _collection = source.readAddress();
+    return { $$type: 'ReportStaticData' as const, query_id: _query_id, index_id: _index_id, collection: _collection };
+}
+
+function storeTupleReportStaticData(source: ReportStaticData) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    builder.writeNumber(source.index_id);
+    builder.writeAddress(source.collection);
+    return builder.build();
+}
+
+function dictValueParserReportStaticData(): DictionaryValue<ReportStaticData> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeReportStaticData(src)).endCell());
+        },
+        parse: (src) => {
+            return loadReportStaticData(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Destroy = {
+    $$type: 'Destroy';
+    query_id: bigint;
+}
+
+export function storeDestroy(src: Destroy) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(520377210, 32);
+        b_0.storeUint(src.query_id, 64);
+    };
+}
+
+export function loadDestroy(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 520377210) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    return { $$type: 'Destroy' as const, query_id: _query_id };
+}
+
+function loadTupleDestroy(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    return { $$type: 'Destroy' as const, query_id: _query_id };
+}
+
+function storeTupleDestroy(source: Destroy) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    return builder.build();
+}
+
+function dictValueParserDestroy(): DictionaryValue<Destroy> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeDestroy(src)).endCell());
+        },
+        parse: (src) => {
+            return loadDestroy(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Excesses = {
+    $$type: 'Excesses';
+    query_id: bigint;
+}
+
+export function storeExcesses(src: Excesses) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(3576854235, 32);
+        b_0.storeUint(src.query_id, 64);
+    };
+}
+
+export function loadExcesses(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 3576854235) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    return { $$type: 'Excesses' as const, query_id: _query_id };
+}
+
+function loadTupleExcesses(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    return { $$type: 'Excesses' as const, query_id: _query_id };
+}
+
+function storeTupleExcesses(source: Excesses) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    return builder.build();
+}
+
+function dictValueParserExcesses(): DictionaryValue<Excesses> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeExcesses(src)).endCell());
+        },
+        parse: (src) => {
+            return loadExcesses(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Revoke = {
+    $$type: 'Revoke';
+    query_id: bigint;
+}
+
+export function storeRevoke(src: Revoke) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(1871312355, 32);
+        b_0.storeUint(src.query_id, 64);
+    };
+}
+
+export function loadRevoke(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 1871312355) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    return { $$type: 'Revoke' as const, query_id: _query_id };
+}
+
+function loadTupleRevoke(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    return { $$type: 'Revoke' as const, query_id: _query_id };
+}
+
+function storeTupleRevoke(source: Revoke) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    return builder.build();
+}
+
+function dictValueParserRevoke(): DictionaryValue<Revoke> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeRevoke(src)).endCell());
+        },
+        parse: (src) => {
+            return loadRevoke(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type TakeExcess = {
+    $$type: 'TakeExcess';
+    query_id: bigint;
+}
+
+export function storeTakeExcess(src: TakeExcess) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(3510031283, 32);
+        b_0.storeUint(src.query_id, 64);
+    };
+}
+
+export function loadTakeExcess(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 3510031283) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    return { $$type: 'TakeExcess' as const, query_id: _query_id };
+}
+
+function loadTupleTakeExcess(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    return { $$type: 'TakeExcess' as const, query_id: _query_id };
+}
+
+function storeTupleTakeExcess(source: TakeExcess) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    return builder.build();
+}
+
+function dictValueParserTakeExcess(): DictionaryValue<TakeExcess> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeTakeExcess(src)).endCell());
+        },
+        parse: (src) => {
+            return loadTakeExcess(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type TransferItem = {
+    $$type: 'TransferItem';
+    query_id: bigint;
+    new_owner: Address;
+    response_destination: Address;
+    custom_payload: Cell | null;
+    forward_amount: bigint;
+    forward_payload: Cell;
+}
+
+export function storeTransferItem(src: TransferItem) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(1607220500, 32);
+        b_0.storeUint(src.query_id, 64);
+        b_0.storeAddress(src.new_owner);
+        b_0.storeAddress(src.response_destination);
+        if (src.custom_payload !== null && src.custom_payload !== undefined) { b_0.storeBit(true).storeRef(src.custom_payload); } else { b_0.storeBit(false); }
+        b_0.storeCoins(src.forward_amount);
+        b_0.storeBuilder(src.forward_payload.asBuilder());
+    };
+}
+
+export function loadTransferItem(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 1607220500) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    let _new_owner = sc_0.loadAddress();
+    let _response_destination = sc_0.loadAddress();
+    let _custom_payload = sc_0.loadBit() ? sc_0.loadRef() : null;
+    let _forward_amount = sc_0.loadCoins();
+    let _forward_payload = sc_0.asCell();
+    return { $$type: 'TransferItem' as const, query_id: _query_id, new_owner: _new_owner, response_destination: _response_destination, custom_payload: _custom_payload, forward_amount: _forward_amount, forward_payload: _forward_payload };
+}
+
+function loadTupleTransferItem(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    let _new_owner = source.readAddress();
+    let _response_destination = source.readAddress();
+    let _custom_payload = source.readCellOpt();
+    let _forward_amount = source.readBigNumber();
+    let _forward_payload = source.readCell();
+    return { $$type: 'TransferItem' as const, query_id: _query_id, new_owner: _new_owner, response_destination: _response_destination, custom_payload: _custom_payload, forward_amount: _forward_amount, forward_payload: _forward_payload };
+}
+
+function storeTupleTransferItem(source: TransferItem) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    builder.writeAddress(source.new_owner);
+    builder.writeAddress(source.response_destination);
+    builder.writeCell(source.custom_payload);
+    builder.writeNumber(source.forward_amount);
+    builder.writeSlice(source.forward_payload);
+    return builder.build();
+}
+
+function dictValueParserTransferItem(): DictionaryValue<TransferItem> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeTransferItem(src)).endCell());
+        },
+        parse: (src) => {
+            return loadTransferItem(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type OwnershipProofBounced = {
+    $$type: 'OwnershipProofBounced';
+    query_id: bigint;
+}
+
+export function storeOwnershipProofBounced(src: OwnershipProofBounced) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(3247343314, 32);
+        b_0.storeUint(src.query_id, 64);
+    };
+}
+
+export function loadOwnershipProofBounced(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 3247343314) { throw Error('Invalid prefix'); }
+    let _query_id = sc_0.loadUintBig(64);
+    return { $$type: 'OwnershipProofBounced' as const, query_id: _query_id };
+}
+
+function loadTupleOwnershipProofBounced(source: TupleReader) {
+    let _query_id = source.readBigNumber();
+    return { $$type: 'OwnershipProofBounced' as const, query_id: _query_id };
+}
+
+function storeTupleOwnershipProofBounced(source: OwnershipProofBounced) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.query_id);
+    return builder.build();
+}
+
+function dictValueParserOwnershipProofBounced(): DictionaryValue<OwnershipProofBounced> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeOwnershipProofBounced(src)).endCell());
+        },
+        parse: (src) => {
+            return loadOwnershipProofBounced(src.loadRef().beginParse());
+        }
+    }
+}
+
  type WithdrawAccount_init_args = {
     $$type: 'WithdrawAccount_init_args';
     owner: Address;
@@ -923,8 +1813,8 @@ function initWithdrawAccount_init_args(src: WithdrawAccount_init_args) {
 }
 
 async function WithdrawAccount_init(owner: Address, vault: Address) {
-    const __code = Cell.fromBase64('te6ccgECFgEABQkAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVEts88uCCDwQFAgEgDQ4CkAGSMH/gcCHXScIflTAg1wsf3iCCENGRHau6jqAw0x8BghDRkR2ruvLggdM/+gCBAQHXAFEzQzBsFNs8f+CCEJRqmLa64wIwcAYHAJzI+EMBzH8BygBVIFog10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8Wyz/J7VQB7EZU+EJSMMcF8uCEgUT2U0G68vSBHBUnwgDy9MgiINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WIyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFhTLPyb6AsnQggC9EVFW+REU8vQBpHBwgEBURIcIApjTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG1tbSJus5lbIG7y0IBvIgGRMuL4QW8kE18D+CdvEAGhggiYloC54w9/CgsBfMhVIIIQVQaiw1AEyx9YINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WAfoCgQEBzwDJVBMERhNQd21tCQHMyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wBYDAHuggiYloBw+wIQJHADBIEAglAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAdwQJHADBIBCUCPIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAwAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwBD74o7tnhE2GMDwIBIBITAbztRNDUAfhj0gABjkb6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0z9VIGwT4Pgo1wsKgwm68uCJEAGK+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEgLRAds8EQACcAC5u70YJwXOw9XSyuex6E7DnWSoUbZoJwndY1LStkfLMi068t/fFiOYJwIFXAG4BnY5TOWDquRyWyw4JwnZdOWrNOy3M6DpZtlGbopIJwQM51aecV+dJQsB1hbiZHsoAgFIFBUAEbCvu1E0NIAAYAB1sm7jQ1aXBmczovL1FtVTdjTjJNdUttdHQyOFI5SHhZS1BXSFVaQ2NUS3hyQVlNMW0xZWRVQXBKZ0uCA=');
-    const __system = Cell.fromBase64('te6cckECGAEABRMAAQHAAQEFoQ//AgEU/wD0pBP0vPLICwMCAWIEDgN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRLbPPLgghAFDQKQAZIwf+BwIddJwh+VMCDXCx/eIIIQ0ZEdq7qOoDDTHwGCENGRHau68uCB0z/6AIEBAdcAUTNDMGwU2zx/4IIQlGqYtrrjAjBwBgkB7EZU+EJSMMcF8uCEgUT2U0G68vSBHBUnwgDy9MgiINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WIyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFhTLPyb6AsnQggC9EVFW+REU8vQBpHBwgEBURIcHAXzIVSCCEFUGosNQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgH6AoEBAc8AyVQTBEYTUHdtbQgBzMhxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAWAwCmNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbW1tIm6zmVsgbvLQgG8iAZEy4vhBbyQTXwP4J28QAaGCCJiWgLnjD38KCwHuggiYloBw+wIQJHADBIEAglAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAdwQJHADBIBCUCPIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAwAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwAnMj4QwHMfwHKAFUgWiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlgg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbLP8ntVAIBIA8TAQ++KO7Z4RNhjBABvO1E0NQB+GPSAAGORvpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTP1UgbBPg+CjXCwqDCbry4IkRAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwSAAJwAgEgFBUAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBSBYXABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbVU3Y04yTXVLbXR0MjhSOUh4WUtQV0hVWkNjVEt4ckFZTTFtMWVkVUFwSmdLgg6Px5KA==');
+    const __code = Cell.fromBase64('te6ccgECFgEABQkAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVEts88uCCDwQFAgEgDQ4CkAGSMH/gcCHXScIflTAg1wsf3iCCENGRHau6jqAw0x8BghDRkR2ruvLggdM/+gCBAQHXAFEzQzBsFNs8f+CCEJRqmLa64wIwcAYHAJzI+EMBzH8BygBVIFog10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8Wyz/J7VQB7EZU+EJSMMcF8uCEgUT2U0G68vSBHBUnwgDy9MgiINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WIyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFhTLPyb6AsnQggC9EVFW+REU8vQBpHBwgEBURIcIApjTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG1tbSJus5lbIG7y0IBvIgGRMuL4QW8kE18D+CdvEAGhggnJw4C54w9/CgsBfMhVIIIQVQaiw1AEyx9YINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WAfoCgQEBzwDJVBMERhNQd21tCQHMyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wBYDAHuggnJw4Bw+wIQJHADBIEAglAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAdwQJHADBIBCUCPIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAwAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwBD74o7tnhE2GMDwIBIBITAbztRNDUAfhj0gABjkb6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0z9VIGwT4Pgo1wsKgwm68uCJEAGK+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEgLRAds8EQACcAC5u70YJwXOw9XSyuex6E7DnWSoUbZoJwndY1LStkfLMi068t/fFiOYJwIFXAG4BnY5TOWDquRyWyw4JwnZdOWrNOy3M6DpZtlGbopIJwQM51aecV+dJQsB1hbiZHsoAgFIFBUAEbCvu1E0NIAAYAB1sm7jQ1aXBmczovL1FtUXk1VEFZTThLcTZ5TGZhNkZFc1l0cGs3UXF3ZnhLc1VQbVlUR0paVTltbVWCA=');
+    const __system = Cell.fromBase64('te6cckECGAEABRMAAQHAAQEFoQ//AgEU/wD0pBP0vPLICwMCAWIEDgN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRLbPPLgghAFDQKQAZIwf+BwIddJwh+VMCDXCx/eIIIQ0ZEdq7qOoDDTHwGCENGRHau68uCB0z/6AIEBAdcAUTNDMGwU2zx/4IIQlGqYtrrjAjBwBgkB7EZU+EJSMMcF8uCEgUT2U0G68vSBHBUnwgDy9MgiINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WIyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFhTLPyb6AsnQggC9EVFW+REU8vQBpHBwgEBURIcHAXzIVSCCEFUGosNQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgH6AoEBAc8AyVQTBEYTUHdtbQgBzMhxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAWAwCmNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbW1tIm6zmVsgbvLQgG8iAZEy4vhBbyQTXwP4J28QAaGCCcnDgLnjD38KCwHuggnJw4Bw+wIQJHADBIEAglAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAdwQJHADBIBCUCPIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAwAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwAnMj4QwHMfwHKAFUgWiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlgg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbLP8ntVAIBIA8TAQ++KO7Z4RNhjBABvO1E0NQB+GPSAAGORvpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTP1UgbBPg+CjXCwqDCbry4IkRAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwSAAJwAgEgFBUAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBSBYXABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbVF5NVRBWU04S3E2eUxmYTZGRXNZdHBrN1Fxd2Z4S3NVUG1ZVEdKWlU5bW1Vgg60AgPw==');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -958,8 +1848,11 @@ const WithdrawAccount_errors: { [key: number]: { message: string } } = {
     135: { message: `Code of a contract was not found` },
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
+    1710: { message: `Not supported` },
     4429: { message: `Invalid sender` },
     7189: { message: `Zero amount` },
+    7657: { message: `Not initialized` },
+    10990: { message: `Already revoked` },
     16960: { message: `Invalid claim amount` },
     17654: { message: `Invalid seqno` },
     21420: { message: `Insufficient jetton amount` },
@@ -968,6 +1861,7 @@ const WithdrawAccount_errors: { [key: number]: { message: string } } = {
     45150: { message: `Only jetton wallet` },
     48401: { message: `Invalid signature` },
     51754: { message: `Insufficient funds` },
+    59449: { message: `Invalid item index` },
     61530: { message: `Not active` },
     63788: { message: `Zero bonus` },
 }
@@ -979,6 +1873,8 @@ const WithdrawAccount_types: ABIType[] = [
     {"name":"Deploy","header":2490013878,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"DeployOk","header":2952335191,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"CollectionData","header":null,"fields":[{"name":"next_item_index","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"content","type":{"kind":"simple","type":"cell","optional":false}},{"name":"owner","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"NftData","header":null,"fields":[{"name":"initialized","type":{"kind":"simple","type":"bool","optional":false}},{"name":"index","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"collection","type":{"kind":"simple","type":"address","optional":false}},{"name":"owner","type":{"kind":"simple","type":"address","optional":true}},{"name":"individual_content","type":{"kind":"simple","type":"cell","optional":false}}]},
     {"name":"ChangeOwner","header":2174598809,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"ChangeOwnerOk","header":846932810,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"SetWithdrawVaultParams","header":1063597757,"fields":[{"name":"active","type":{"kind":"simple","type":"bool","optional":true}},{"name":"pubkey","type":{"kind":"simple","type":"int","optional":true,"format":257}}]},
@@ -990,6 +1886,21 @@ const WithdrawAccount_types: ABIType[] = [
     {"name":"NotifyBonusInternal","header":781715065,"fields":[{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"refund_to","type":{"kind":"simple","type":"address","optional":false}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
     {"name":"JettonNotification","header":1935855772,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"JettonTransfer","header":260734629,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"response_destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"custom_payload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forward_ton_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
+    {"name":"MintBadgeItem","header":2527069138,"fields":[{"name":"index","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"authority","type":{"kind":"simple","type":"address","optional":false}},{"name":"content","type":{"kind":"simple","type":"cell","optional":false}},{"name":"signature","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
+    {"name":"SetBadgeCollectionPubkey","header":2736126250,"fields":[{"name":"pubkey","type":{"kind":"simple","type":"int","optional":false,"format":257}}]},
+    {"name":"MintBadgeItemInternal","header":14157336,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"content","type":{"kind":"simple","type":"cell","optional":false}},{"name":"authority","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"RequestOwner","header":3502489578,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"dest","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"cell","optional":false}},{"name":"with_content","type":{"kind":"simple","type":"bool","optional":false}}]},
+    {"name":"OwnerInfo","header":232130531,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"item_id","type":{"kind":"simple","type":"uint","optional":false,"format":256}},{"name":"initiator","type":{"kind":"simple","type":"address","optional":false}},{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"data","type":{"kind":"simple","type":"cell","optional":false}},{"name":"revoked_at","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"content","type":{"kind":"simple","type":"cell","optional":true}}]},
+    {"name":"ProveOwnership","header":81711432,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"dest","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"cell","optional":false}},{"name":"with_content","type":{"kind":"simple","type":"bool","optional":false}}]},
+    {"name":"OwnershipProof","header":86296494,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"item_id","type":{"kind":"simple","type":"uint","optional":false,"format":256}},{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"data","type":{"kind":"simple","type":"cell","optional":false}},{"name":"revoked_at","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"content","type":{"kind":"simple","type":"cell","optional":true}}]},
+    {"name":"GetStaticData","header":801842850,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"ReportStaticData","header":2339837749,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"index_id","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"collection","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"Destroy","header":520377210,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"Excesses","header":3576854235,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"Revoke","header":1871312355,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"TakeExcess","header":3510031283,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"TransferItem","header":1607220500,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"new_owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"response_destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"custom_payload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forward_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
+    {"name":"OwnershipProofBounced","header":3247343314,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
 ]
 
 const WithdrawAccount_getters: ABIGetter[] = [

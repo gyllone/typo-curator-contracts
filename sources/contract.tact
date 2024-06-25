@@ -38,7 +38,7 @@ contract DepositVault with BaseDepositVault, Deployable {
 
 // === Deposit Account Contract === //
 
-contract DepositAccount with BaseDepositAccount, Deployable {
+contract DepositAccount with BaseDepositAccount {
     override const storageReserve: Int = ton("0.05");
 
     // from BaseDepositAccount
@@ -129,7 +129,28 @@ contract BadgeCollection with BaseBadgeCollection, Deployable {
         self.content = content;
     }
 
-    override inline fun _get_account_init(owner: Address): StateInit {
-        return initOf BadgeItem(owner, myAddress());
+    override inline fun _get_badge_item_init(index: Int): StateInit {
+        return initOf BadgeItem(myAddress(), index);
+    }
+}
+
+// === Badge Item Contract === //
+
+contract BadgeItem with BaseBadgeItem {
+    override const storageReserve: Int = ton("0.05");
+
+    // from BaseBadgeItem
+    initialized: Bool = false;
+    index: Int as uint64;
+    collection: Address;
+    owner: Address? = null;
+    content: Cell? = null;
+    authority: Address? = null;
+    revoked_at: Int as uint64 = 0;
+    // ============================
+
+    init(collection: Address, index: Int) {
+        self.collection = collection;
+        self.index = index;
     }
 }

@@ -18,7 +18,7 @@ trait BaseBadgeCollection with OwnableTransferable {
 
         let payload: Slice = beginCell()
             .storeAddress(myAddress())
-            .StoreUint(msg.index, 64)
+            .storeUint(msg.index, 64)
             .storeAddress(msg.owner)
             .storeAddress(msg.authority)
             .storeRef(msg.content)
@@ -32,9 +32,9 @@ trait BaseBadgeCollection with OwnableTransferable {
 
         nativeReserve(self.storageReserve, ReserveExact);
 
-        let sinit: StateInit = self._get_nft_item_init(msg.index);
+        let sinit: StateInit = self._get_badge_item_init(msg.index);
         send(SendParameters {
-            to: contractAddress(nft_init), 
+            to: contractAddress(sinit), 
             value: 0,
             bounce: false,
             mode: SendRemainingBalance,
@@ -57,7 +57,7 @@ trait BaseBadgeCollection with OwnableTransferable {
         self.notify(null);
     }
     
-    abstract inline fun _get_nft_item_init(index: Int): StateInit;
+    abstract inline fun _get_badge_item_init(index: Int): StateInit;
 
     // === GETTERS ===
 
@@ -74,7 +74,7 @@ trait BaseBadgeCollection with OwnableTransferable {
     }
 
     get fun get_nft_address_by_index(index: Int): Address?{      
-        let sinit: StateInit = self._get_nft_item_init(index);
+        let sinit: StateInit = self._get_badge_item_init(index);
         return contractAddress(sinit);
     }
     

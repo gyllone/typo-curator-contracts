@@ -1,6 +1,4 @@
 
-
-
 struct CollectionData {
     next_item_index: Int;
     content: Cell;

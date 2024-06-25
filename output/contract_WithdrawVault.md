@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: WithdrawVault
-BOC Size: 2146 bytes
+BOC Size: 2246 bytes
 
 # Types
-Total Types: 17
+Total Types: 34
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -28,6 +28,14 @@ Signature: `DeployOk{queryId:uint64}`
 ## FactoryDeploy
 TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
+
+## CollectionData
+TLB: `_ next_item_index:int257 content:^cell owner:address = CollectionData`
+Signature: `CollectionData{next_item_index:int257,content:^cell,owner:address}`
+
+## NftData
+TLB: `_ initialized:bool index:int257 collection:address owner:Maybe address individual_content:^cell = NftData`
+Signature: `NftData{initialized:bool,index:int257,collection:address,owner:Maybe address,individual_content:^cell}`
 
 ## ChangeOwner
 TLB: `change_owner#819dbe99 queryId:uint64 newOwner:address = ChangeOwner`
@@ -73,6 +81,66 @@ Signature: `JettonNotification{query_id:uint64,amount:coins,from:address,forward
 TLB: `jetton_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = JettonTransfer`
 Signature: `JettonTransfer{query_id:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
+## MintBadgeItem
+TLB: `mint_badge_item#96a003d2 index:uint64 owner:address authority:address content:^cell signature:remainder<slice> = MintBadgeItem`
+Signature: `MintBadgeItem{index:uint64,owner:address,authority:address,content:^cell,signature:remainder<slice>}`
+
+## SetBadgeCollectionPubkey
+TLB: `set_badge_collection_pubkey#a315f92a pubkey:int257 = SetBadgeCollectionPubkey`
+Signature: `SetBadgeCollectionPubkey{pubkey:int257}`
+
+## MintBadgeItemInternal
+TLB: `mint_badge_item_internal#00d80618 owner:address content:^cell authority:address = MintBadgeItemInternal`
+Signature: `MintBadgeItemInternal{owner:address,content:^cell,authority:address}`
+
+## RequestOwner
+TLB: `request_owner#d0c3bfea query_id:uint64 dest:address forward_payload:^cell with_content:bool = RequestOwner`
+Signature: `RequestOwner{query_id:uint64,dest:address,forward_payload:^cell,with_content:bool}`
+
+## OwnerInfo
+TLB: `owner_info#0dd607e3 query_id:uint64 item_id:uint256 initiator:address owner:address data:^cell revoked_at:uint64 content:Maybe ^cell = OwnerInfo`
+Signature: `OwnerInfo{query_id:uint64,item_id:uint256,initiator:address,owner:address,data:^cell,revoked_at:uint64,content:Maybe ^cell}`
+
+## ProveOwnership
+TLB: `prove_ownership#04ded148 query_id:uint64 dest:address forward_payload:^cell with_content:bool = ProveOwnership`
+Signature: `ProveOwnership{query_id:uint64,dest:address,forward_payload:^cell,with_content:bool}`
+
+## OwnershipProof
+TLB: `ownership_proof#0524c7ae query_id:uint64 item_id:uint256 owner:address data:^cell revoked_at:uint64 content:Maybe ^cell = OwnershipProof`
+Signature: `OwnershipProof{query_id:uint64,item_id:uint256,owner:address,data:^cell,revoked_at:uint64,content:Maybe ^cell}`
+
+## GetStaticData
+TLB: `get_static_data#2fcb26a2 query_id:uint64 = GetStaticData`
+Signature: `GetStaticData{query_id:uint64}`
+
+## ReportStaticData
+TLB: `report_static_data#8b771735 query_id:uint64 index_id:int257 collection:address = ReportStaticData`
+Signature: `ReportStaticData{query_id:uint64,index_id:int257,collection:address}`
+
+## Destroy
+TLB: `destroy#1f04537a query_id:uint64 = Destroy`
+Signature: `Destroy{query_id:uint64}`
+
+## Excesses
+TLB: `excesses#d53276db query_id:uint64 = Excesses`
+Signature: `Excesses{query_id:uint64}`
+
+## Revoke
+TLB: `revoke#6f89f5e3 query_id:uint64 = Revoke`
+Signature: `Revoke{query_id:uint64}`
+
+## TakeExcess
+TLB: `take_excess#d136d3b3 query_id:uint64 = TakeExcess`
+Signature: `TakeExcess{query_id:uint64}`
+
+## TransferItem
+TLB: `transfer_item#5fcc3d14 query_id:uint64 new_owner:address response_destination:address custom_payload:Maybe ^cell forward_amount:coins forward_payload:remainder<slice> = TransferItem`
+Signature: `TransferItem{query_id:uint64,new_owner:address,response_destination:address,custom_payload:Maybe ^cell,forward_amount:coins,forward_payload:remainder<slice>}`
+
+## OwnershipProofBounced
+TLB: `ownership_proof_bounced#c18e86d2 query_id:uint64 = OwnershipProofBounced`
+Signature: `OwnershipProofBounced{query_id:uint64}`
+
 # Get Methods
 Total Get Methods: 1
 
@@ -103,8 +171,11 @@ Total Get Methods: 1
 135: Code of a contract was not found
 136: Invalid address
 137: Masterchain support is not enabled for this contract
+1710: Not supported
 4429: Invalid sender
 7189: Zero amount
+7657: Not initialized
+10990: Already revoked
 16960: Invalid claim amount
 17654: Invalid seqno
 21420: Insufficient jetton amount
@@ -113,5 +184,6 @@ Total Get Methods: 1
 45150: Only jetton wallet
 48401: Invalid signature
 51754: Insufficient funds
+59449: Invalid item index
 61530: Not active
 63788: Zero bonus

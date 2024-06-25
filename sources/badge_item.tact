@@ -22,7 +22,7 @@ trait BaseBadgeItem {
     }
 
     receive(msg: RequestOwner) {
-        require(self.is_initialized, "Not initialized");
+        require(self.initialized, "Not initialized");
         let content: Cell? = null;
         if (msg.with_content) {
             content = self.content;
@@ -46,7 +46,7 @@ trait BaseBadgeItem {
     }
 
     receive(msg: ProveOwnership) {
-        require(self.is_initialized, "Not initialized");
+        require(self.initialized, "Not initialized");
         require(self.owner == sender(), "Invalid sender");
         let content: Cell? = null;
         if (msg.with_content) {
@@ -70,7 +70,7 @@ trait BaseBadgeItem {
     }
 
     receive(msg: GetStaticData) {
-        require(self.is_initialized, "Not initialized");
+        require(self.initialized, "Not initialized");
 
         send(SendParameters {
             to: sender(),
@@ -86,7 +86,7 @@ trait BaseBadgeItem {
     }
 
     receive(msg: Destroy) {
-        require(self.is_initialized, "Not initialized");
+        require(self.initialized, "Not initialized");
         require(sender() == self.owner!!, "Invalid sender");
 
         self.owner = null;
@@ -102,7 +102,7 @@ trait BaseBadgeItem {
     }
 
     receive(msg: Revoke) {
-        require(self.is_initialized, "Not initialized");
+        require(self.initialized, "Not initialized");
         require(sender() == self.authority, "Invalid sender");
         require(self.revoked_at == 0, "Already revoked");
 
@@ -110,7 +110,7 @@ trait BaseBadgeItem {
     }
 
     receive(msg: TakeExcess) {
-        require(self.is_initialized, "Not initialized");
+        require(self.initialized, "Not initialized");
         require(sender() == self.owner!!, "Invalid sender");
 
         nativeReserve(self.storageReserve, ReserveExact);

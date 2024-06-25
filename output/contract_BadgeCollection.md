@@ -1,6 +1,6 @@
 # TACT Compilation Report
-Contract: DepositVault
-BOC Size: 2653 bytes
+Contract: BadgeCollection
+BOC Size: 2169 bytes
 
 # Types
 Total Types: 34
@@ -142,7 +142,16 @@ TLB: `ownership_proof_bounced#c18e86d2 query_id:uint64 = OwnershipProofBounced`
 Signature: `OwnershipProofBounced{query_id:uint64}`
 
 # Get Methods
-Total Get Methods: 1
+Total Get Methods: 4
+
+## get_collection_data
+
+## get_nft_address_by_index
+Argument: index
+
+## get_nft_content
+Argument: index
+Argument: individual_content
 
 ## owner
 
