@@ -16,15 +16,16 @@ trait BaseBadgeCollection with OwnableTransferable {
     receive(msg: MintBadgeItem) {
         require(msg.index == self.next_item_index, "Invalid item index");
 
-        let payload: Slice = beginCell()
+        let digest: Int = beginCell()
             .storeAddress(myAddress())
             .storeUint(msg.index, 64)
             .storeAddress(msg.owner)
             .storeAddress(msg.authority)
             .storeRef(msg.content)
-            .asSlice();
+            .endCell()
+            .hash();
         require(
-            checkDataSignature(payload, msg.signature, self.pubkey),
+            checkSignature(digest, msg.signature, self.pubkey),
             "Invalid signature",
         );
 

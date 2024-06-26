@@ -1,5 +1,6 @@
 import "@stdlib/ownable";
 import "./messages";
+import "./data";
 
 
 trait BaseDepositAccount with Ownable {
@@ -77,4 +78,16 @@ trait BaseDepositAccount with Ownable {
     }
 
     abstract inline fun _get_account_state_init(owner: Address): StateInit;
+
+    // === Getter Functions === //
+
+    get fun get_data(): DepositAccountData {
+        return DepositAccountData {
+            owner: self.owner,
+            vault: self.vault,
+            referrer: self.referrer,
+            deposit_amount: self.deposit_amount,
+            bonus_amount: self.bonus_amount,
+        };
+    }
 }

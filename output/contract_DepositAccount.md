@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: DepositAccount
-BOC Size: 2146 bytes
+BOC Size: 2166 bytes
 
 # Types
-Total Types: 34
+Total Types: 38
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -29,6 +29,22 @@ Signature: `DeployOk{queryId:uint64}`
 TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
 
+## DepositVaultData
+TLB: `_ owner:address jetton_master:address jetton_wallet_code:^cell jetton_amount:int257 claimed_bonus_amount:int257 active:bool min_claim_amount:int257 bonus_percentage:int257 = DepositVaultData`
+Signature: `DepositVaultData{owner:address,jetton_master:address,jetton_wallet_code:^cell,jetton_amount:int257,claimed_bonus_amount:int257,active:bool,min_claim_amount:int257,bonus_percentage:int257}`
+
+## DepositAccountData
+TLB: `_ owner:address vault:address referrer:Maybe address deposit_amount:int257 bonus_amount:int257 = DepositAccountData`
+Signature: `DepositAccountData{owner:address,vault:address,referrer:Maybe address,deposit_amount:int257,bonus_amount:int257}`
+
+## WithdrawVaultData
+TLB: `_ owner:address jetton_master:address jetton_wallet_code:^cell jetton_amount:int257 withdrawn_amount:int257 active:bool pubkey:int257 = WithdrawVaultData`
+Signature: `WithdrawVaultData{owner:address,jetton_master:address,jetton_wallet_code:^cell,jetton_amount:int257,withdrawn_amount:int257,active:bool,pubkey:int257}`
+
+## WithdrawAccountData
+TLB: `_ owner:address vault:address seqno:int257 withdrawn_amount:int257 = WithdrawAccountData`
+Signature: `WithdrawAccountData{owner:address,vault:address,seqno:int257,withdrawn_amount:int257}`
+
 ## CollectionData
 TLB: `_ next_item_index:int257 content:^cell owner:address = CollectionData`
 Signature: `CollectionData{next_item_index:int257,content:^cell,owner:address}`
@@ -50,8 +66,8 @@ TLB: `set_withdraw_vault_params#3f6536bd active:Maybe bool pubkey:Maybe int257 =
 Signature: `SetWithdrawVaultParams{active:Maybe bool,pubkey:Maybe int257}`
 
 ## WithdrawInternal
-TLB: `withdraw_internal#5506a2c3 owner:address amount:coins pubkey:int257 = WithdrawInternal`
-Signature: `WithdrawInternal{owner:address,amount:coins,pubkey:int257}`
+TLB: `withdraw_internal#c00099eb amount:coins owner:address pubkey:int257 = WithdrawInternal`
+Signature: `WithdrawInternal{amount:coins,owner:address,pubkey:int257}`
 
 ## WithdrawRequest
 TLB: `withdraw_request#d1911dab seqno:uint64 amount:coins pubkey:int257 signature:remainder<slice> = WithdrawRequest`
@@ -142,7 +158,9 @@ TLB: `ownership_proof_bounced#c18e86d2 query_id:uint64 = OwnershipProofBounced`
 Signature: `OwnershipProofBounced{query_id:uint64}`
 
 # Get Methods
-Total Get Methods: 1
+Total Get Methods: 2
+
+## get_data
 
 ## owner
 

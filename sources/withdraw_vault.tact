@@ -1,6 +1,7 @@
 import "@stdlib/ownable";
 import "./library/jetton_wallet";
 import "./messages";
+import "./data";
 
 
 trait BaseWithdrawVault with OwnableTransferable {
@@ -60,7 +61,7 @@ trait BaseWithdrawVault with OwnableTransferable {
                 response_destination: msg.owner,
                 custom_payload: null,
                 forward_ton_amount: 0,
-                forward_payload: beginCell().storeBool(true).asSlice() // no meaning, just to make it not empty
+                forward_payload: emptySlice()
             }.toCell()
         });
     }
@@ -83,5 +84,15 @@ trait BaseWithdrawVault with OwnableTransferable {
 
     // === Getters ===
 
-    
+    get fun get_data(): WithdrawVaultData {
+        return WithdrawVaultData {
+            owner: self.owner,
+            jetton_master: self.jetton_master,
+            jetton_wallet_code: self.jetton_wallet_code,
+            jetton_amount: self.jetton_amount,
+            withdrawn_amount: self.withdrawn_amount,
+            active: self.active,
+            pubkey: self.pubkey
+        };
+    }
 }

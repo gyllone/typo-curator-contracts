@@ -98,6 +98,7 @@ contract WithdrawAccount with BaseWithdrawAccount, Deployable {
 
     vault: Address;
     seqno: Int as uint64 = 0;
+    withdrawn_amount: Int as coins = 0;
     // ============================
 
     init(owner: Address, vault: Address) {

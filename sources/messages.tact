@@ -8,8 +8,8 @@ message SetWithdrawVaultParams {
 }
 
 message WithdrawInternal {
-    owner: Address;
     amount: Int as coins;
+    owner: Address;
     pubkey: Int;
 }
 

@@ -4,7 +4,9 @@
     "build": "tact --config ./tact.config.json",
     "clean": "rm -rf ./output/*",
     "test": "jest",
-    "deploy": "ts-node ./scripts/deploy.ts"
+    "deploy_deposit_vault": "ts-node ./scripts/deploy/deposit_vault.ts",
+    "deploy_withdraw_vault": "ts-node ./scripts/deploy/withdraw_vault.ts",
+    "deploy_badge_collection": "ts-node ./scripts/deploy/badge_collection.ts"
   },
   "dependencies": {
     "@tact-lang/compiler": "~1.4.0",

@@ -1,6 +1,7 @@
 import "@stdlib/ownable";
 import "./library/jetton_wallet";
 import "./messages";
+import "./data";
 
 
 trait BaseDepositVault with OwnableTransferable {
@@ -63,7 +64,7 @@ trait BaseDepositVault with OwnableTransferable {
                 response_destination: msg.beneficiary,
                 custom_payload: null,
                 forward_ton_amount: 0,
-                forward_payload: beginCell().storeBool(true).asSlice() // no meaning, just to make it not empty
+                forward_payload: emptySlice()
             }.toCell(),
         });
     }
@@ -102,5 +103,17 @@ trait BaseDepositVault with OwnableTransferable {
     abstract inline fun _get_account_init(owner: Address): StateInit;
 
     // === GETTERS ===
-    
+
+    get fun get_data(): DepositVaultData {
+        return DepositVaultData {
+            owner: self.owner,
+            jetton_master: self.jetton_master,
+            jetton_wallet_code: self.jetton_wallet_code,
+            jetton_amount: self.jetton_amount,
+            claimed_bonus_amount: self.claimed_bonus_amount,
+            active: self.active,
+            min_claim_amount: self.min_claim_amount,
+            bonus_percentage: self.bonus_percentage
+        };
+    }
 }
