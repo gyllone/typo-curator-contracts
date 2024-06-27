@@ -1,4 +1,4 @@
-import { beginCell, Slice, toNano } from "@ton/core";
+import { beginCell, toNano } from "@ton/core";
 import { sign } from "@ton/crypto";
 import { WithdrawAccount } from "../../output/contract_WithdrawAccount";
 import { Deployments, Client } from "../constants";
@@ -15,7 +15,7 @@ async function main() {
 
     // Sign message with another keypair
     const withdraw_account = await WithdrawAccount.fromInit(wallet.address, Deployments.WithdrawVault);
-    const seqno = BigInt(2);
+    const seqno = BigInt(0);
     const withdraw_amount = BigInt(1000000);
     const digest = beginCell()
         .storeAddress(withdraw_account.address)
@@ -23,6 +23,7 @@ async function main() {
         .storeCoins(withdraw_amount)
         .endCell()
         .hash();
+    // Keypair2 should be stored backend
     const keypair2 = await getKeyPair2();
     const sig = sign(digest, keypair2.secretKey);
 

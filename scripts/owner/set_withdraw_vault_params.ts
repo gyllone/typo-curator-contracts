@@ -18,6 +18,7 @@ async function main() {
         {
             $$type: "SetWithdrawVaultParams",
             active: true,
+            // pubkey of keypair_backend
             pubkey: BigInt(`0x${keypair2.publicKey.toString("hex")}`),
         }
     );
