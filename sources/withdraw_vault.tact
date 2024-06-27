@@ -61,7 +61,7 @@ trait BaseWithdrawVault with OwnableTransferable {
                 response_destination: msg.owner,
                 custom_payload: null,
                 forward_ton_amount: 0,
-                forward_payload: emptySlice()
+                forward_payload: beginCell().storeBool(false).asSlice()
             }.toCell()
         });
     }

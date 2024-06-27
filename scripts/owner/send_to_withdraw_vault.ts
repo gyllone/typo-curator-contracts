@@ -1,4 +1,4 @@
-import { beginCell, toNano } from "@ton/core";
+import { toNano } from "@ton/core";
 import { JettonMaster } from "@ton/ton";
 import { JettonWallet } from "../jetton_utils";
 import { Deployments, Client, JettonData } from "../constants";
@@ -22,9 +22,8 @@ async function main() {
         transfer_amount,
         Deployments.WithdrawVault,
         wallet.address,
-        beginCell().endCell(),
         toNano("0.1"),
-        beginCell().endCell(),
+        null,
     );
 }
 

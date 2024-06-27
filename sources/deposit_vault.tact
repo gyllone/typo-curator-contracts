@@ -22,10 +22,17 @@ trait BaseDepositVault with OwnableTransferable {
 
         self.jetton_amount += msg.amount;
 
-        if (msg.forward_payload.bits() == 267 + 267) {
-            let beneficiary: Address = msg.forward_payload.loadAddress();
-            let referrer: Address = msg.forward_payload.loadAddress();
+        commit();
+
+        let flag: Bool = msg.forward_payload.loadBool();
+        if (flag) {
+            let payload: Slice = msg.forward_payload.loadRef().beginParse();
+            msg.forward_payload.endParse();
             
+            let beneficiary: Address = payload.loadAddress();
+            let referrer: Address = payload.loadAddress();
+            payload.endParse();
+
             let bonus_amount: Int = msg.amount * self.bonus_percentage / 100;
             let sinit: StateInit = self._get_account_init(beneficiary);
             self.forward(
@@ -39,6 +46,9 @@ trait BaseDepositVault with OwnableTransferable {
                 false,
                 sinit,
             );
+        } else {
+            // refund gas
+            self.forward(msg.from, null, false, null);
         }
     }
 
@@ -64,7 +74,7 @@ trait BaseDepositVault with OwnableTransferable {
                 response_destination: msg.beneficiary,
                 custom_payload: null,
                 forward_ton_amount: 0,
-                forward_payload: emptySlice()
+                forward_payload: beginCell().storeBool(false).asSlice()
             }.toCell(),
         });
     }

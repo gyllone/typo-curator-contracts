@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: WithdrawVault
-BOC Size: 2262 bytes
+BOC Size: 2266 bytes
 
 # Types
 Total Types: 38
