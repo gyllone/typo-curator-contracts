@@ -15,7 +15,7 @@ async function main() {
     const jetton_wallet_address = await Client.open(jetton_master).getWalletAddress(wallet.address);
 
     const jetton_wallet = JettonWallet.createFromAddress(jetton_wallet_address);
-    const transfer_amount = BigInt(10000000000);
+    const transfer_amount = toNano("100000000");
     await Client.open(jetton_wallet).sendTransfer(
         sender,
         toNano("0.15"),

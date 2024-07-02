@@ -13,8 +13,8 @@ export const JettonData = {
 };
 
 export const Deployments = {
-    DepositVault: Address.parse("kQDC-ZPhL5NAZ4_vB5U0oNPsMtmc8Ex0jG0FWRH_Z4LlaecG"),
-    WithdrawVault: Address.parse("kQDirLn0jrX2MVVTn5zlzkKiT9pZ49zrUvIk12Pr_elvDq20"),
+    DepositVault: Address.parse("kQD52gmtiGKv_Oy-YW_f04BwNVspXmzO1OKwTIFhYWJ32k3_"),
+    WithdrawVault: Address.parse("kQA-I_XBSIaTdaKMLYa0Wqi0Poio3YyLc2quXxJNJrppFRiH"),
     BadgeCollection: Address.parse("kQA7uSohAKNHmRM7lGvQZOwOjoZcfVmRG-ZRuA6JP_BYrA24"),
 };
 
