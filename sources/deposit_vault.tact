@@ -96,6 +96,30 @@ trait BaseDepositVault with OwnableTransferable {
         self.notify(null);
     }
 
+    receive(msg: OwnerWithdrawRequest) {
+        self.requireOwner();
+        require(self.jetton_amount >= msg.amount, "Insufficient jetton amount");
+
+        self.jetton_amount -= msg.amount;
+
+        nativeReserve(self.storageReserve, ReserveExact);
+        send(SendParameters {
+            bounce: false,
+            to: self._get_jetton_wallet_address(),
+            value: 0,
+            mode: SendRemainingBalance,
+            body: JettonTransfer {
+                query_id: 0,
+                amount: msg.amount,
+                destination: self.owner,
+                response_destination: self.owner,
+                custom_payload: null,
+                forward_ton_amount: 0,
+                forward_payload: beginCell().storeBool(false).asSlice()
+            }.toCell()
+        });
+    }
+
     inline fun _get_jetton_wallet_address(): Address {
         let sinit: StateInit = get_jetton_wallet_state_init(
             myAddress(),

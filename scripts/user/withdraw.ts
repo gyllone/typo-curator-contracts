@@ -15,7 +15,8 @@ async function main() {
 
     // Sign message with another keypair
     const withdraw_account = await WithdrawAccount.fromInit(wallet.address, Deployments.WithdrawVault);
-    const seqno = BigInt(0);
+    // seqno should be read from user withdraw account!!!
+    const seqno = BigInt(1);
     const withdraw_amount = BigInt(1000000);
     const digest = beginCell()
         .storeAddress(withdraw_account.address)

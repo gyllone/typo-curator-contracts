@@ -35,6 +35,10 @@ message SetDepositVaultParams {
     bonus_percentage: Int?;
 }
 
+message OwnerWithdrawRequest {
+    amount: Int as coins;
+}
+
 // === Deposit Account Messages ===
 
 message DepositInternal {

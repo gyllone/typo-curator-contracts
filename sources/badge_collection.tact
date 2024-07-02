@@ -10,7 +10,6 @@ trait BaseBadgeCollection with OwnableTransferable {
 
     next_item_index: Int;               
     content: Cell;
-
     pubkey: Int;
 
     receive(msg: MintBadgeItem) {

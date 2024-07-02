@@ -17,3 +17,5 @@ export const Deployments = {
     WithdrawVault: Address.parse("kQDirLn0jrX2MVVTn5zlzkKiT9pZ49zrUvIk12Pr_elvDq20"),
     BadgeCollection: Address.parse("kQA7uSohAKNHmRM7lGvQZOwOjoZcfVmRG-ZRuA6JP_BYrA24"),
 };
+
+export const BadgeCollectionUrl = "https://www.google.com";

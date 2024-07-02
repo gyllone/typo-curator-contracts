@@ -1052,6 +1052,48 @@ function dictValueParserSetDepositVaultParams(): DictionaryValue<SetDepositVault
     }
 }
 
+export type OwnerWithdrawRequest = {
+    $$type: 'OwnerWithdrawRequest';
+    amount: bigint;
+}
+
+export function storeOwnerWithdrawRequest(src: OwnerWithdrawRequest) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(4183652958, 32);
+        b_0.storeCoins(src.amount);
+    };
+}
+
+export function loadOwnerWithdrawRequest(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 4183652958) { throw Error('Invalid prefix'); }
+    let _amount = sc_0.loadCoins();
+    return { $$type: 'OwnerWithdrawRequest' as const, amount: _amount };
+}
+
+function loadTupleOwnerWithdrawRequest(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    return { $$type: 'OwnerWithdrawRequest' as const, amount: _amount };
+}
+
+function storeTupleOwnerWithdrawRequest(source: OwnerWithdrawRequest) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.amount);
+    return builder.build();
+}
+
+function dictValueParserOwnerWithdrawRequest(): DictionaryValue<OwnerWithdrawRequest> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeOwnerWithdrawRequest(src)).endCell());
+        },
+        parse: (src) => {
+            return loadOwnerWithdrawRequest(src.loadRef().beginParse());
+        }
+    }
+}
+
 export type DepositInternal = {
     $$type: 'DepositInternal';
     delegator: Address;
@@ -2085,8 +2127,8 @@ function initWithdrawAccount_init_args(src: WithdrawAccount_init_args) {
 }
 
 async function WithdrawAccount_init(owner: Address, vault: Address) {
-    const __code = Cell.fromBase64('te6ccgECGAEABToAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCEQQFAgEgDQ4C7gGOMIAg1yFwIddJwh+VMCDXCx/eghDAAJnruo4T0x8BghDAAJnruvLggfoAATGhf+Awf+BwIddJwh+VMCDXCx/eIIIQ0ZEdq7qOoDDTHwGCENGRHau68uCB0z/6AIEBAdcAUTNDMGwU2zx/4IIQlGqYtrrjAjBwBgcApsj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEss/AfoCye1UAbhVM/hCUkDHBfLghIFE9lOCuvL0gRwVJ8IA8vTI+Cgg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYYyz8m+gLJ+QCCAL0RUVb5EBTy9AKkUVSgf3BRY4BABwgCmNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbW1tIm6zmVsgbvLQgG8iAZEy4vhBbyQTXwP4J28QAaGCCcnDgLnjD38KCwF8yFUgghDAAJnrUATLH1j6AgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxaBAQHPAMlUEwRHE1BmbW0JAc7IcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AEAzDAHuggnJw4Bw+wIQJHADBIEAglAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAdwQJHADBIBCUCPIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAwAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwCASAPEAIBIBQVARW7SJ2zxUcyEjbESBEBD7hR3bPCNsQYEQHA7UTQ1AH4Y9IAAY5I+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdM/+gBVMGwU4Pgo1wsKgwm68uCJEgGK+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEgLRAds8EwAEcCAAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBSBYXABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbVRxSlhGUDJvV1BKdFptbm93SlkzUURVYnJVcTV5WW1QS0RnVUpIemhKeWNogg');
-    const __system = Cell.fromBase64('te6cckECGgEABUQAAQHAAQEFoQ//AgEU/wD0pBP0vPLICwMCAWIEDgN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLgghIFDQLuAY4wgCDXIXAh10nCH5UwINcLH96CEMAAmeu6jhPTHwGCEMAAmeu68uCB+gABMaF/4DB/4HAh10nCH5UwINcLH94gghDRkR2ruo6gMNMfAYIQ0ZEdq7ry4IHTP/oAgQEB1wBRM0MwbBTbPH/gghCUapi2uuMCMHAGCQG4VTP4QlJAxwXy4ISBRPZTgrry9IEcFSfCAPL0yPgoINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WGMs/JvoCyfkAggC9EVFW+RAU8vQCpFFUoH9wUWOAQAcHAXzIVSCCEMAAmetQBMsfWPoCASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFoEBAc8AyVQTBEcTUGZtbQgBzshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAQDMMApjTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG1tbSJus5lbIG7y0IBvIgGRMuL4QW8kE18D+CdvEAGhggnJw4C54w9/CgsB7oIJycOAcPsCECRwAwSBAIJQI8hxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsADAHcECRwAwSAQlAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAKbI+EMBzH8BygBVMFBDINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFhLLPwH6AsntVAIBIA8VAgEgEBEBFbtInbPFRzISNsRIEgEPuFHds8I2xBgSAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0z/6AFUwbBTg+CjXCwqDCbry4IkTAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwUAARwIAIBIBYXALm7vRgnBc7D1dLK57HoTsOdZKhRtmgnCd1jUtK2R8syLTry398WI5gnAgVcAbgGdjlM5YOq5HJbLDgnCdl05as07LczoOlm2UZuikgnBAznVp5xX50lCwHWFuJkeygCAUgYGQARsK+7UTQ0gABgAHWybuNDVpcGZzOi8vUW1UcUpYRlAyb1dQSnRabW5vd0pZM1FEVWJyVXE1eVltUEtEZ1VKSHpoSnljaIIJVG5H4=');
+    const __code = Cell.fromBase64('te6ccgECGAEABToAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCEQQFAgEgDQ4C7gGOMIAg1yFwIddJwh+VMCDXCx/eghDAAJnruo4T0x8BghDAAJnruvLggfoAATGhf+Awf+BwIddJwh+VMCDXCx/eIIIQ0ZEdq7qOoDDTHwGCENGRHau68uCB0z/6AIEBAdcAUTNDMGwU2zx/4IIQlGqYtrrjAjBwBgcApsj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEss/AfoCye1UAbhVM/hCUkDHBfLghIFE9lOCuvL0gRwVJ8IA8vTI+Cgg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYYyz8m+gLJ+QCCAL0RUVb5EBTy9AKkUVSgf3BRY4BABwgCmNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbW1tIm6zmVsgbvLQgG8iAZEy4vhBbyQTXwP4J28QAaGCCcnDgLnjD38KCwF8yFUgghDAAJnrUATLH1j6AgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxaBAQHPAMlUEwRHE1BmbW0JAc7IcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AEAzDAHuggnJw4Bw+wIQJHADBIEAglAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAdwQJHADBIBCUCPIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAwAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwCASAPEAIBIBQVARW7SJ2zxUcyEjbESBEBD7hR3bPCNsQYEQHA7UTQ1AH4Y9IAAY5I+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdM/+gBVMGwU4Pgo1wsKgwm68uCJEgGK+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEgLRAds8EwAEcCAAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBSBYXABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbVZqZE1zZHZlYXRTell2SkhiakcyRmk1dVhzcWFNblJmYUt4cDNUdE5jdzVUgg');
+    const __system = Cell.fromBase64('te6cckECGgEABUQAAQHAAQEFoQ//AgEU/wD0pBP0vPLICwMCAWIEDgN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLgghIFDQLuAY4wgCDXIXAh10nCH5UwINcLH96CEMAAmeu6jhPTHwGCEMAAmeu68uCB+gABMaF/4DB/4HAh10nCH5UwINcLH94gghDRkR2ruo6gMNMfAYIQ0ZEdq7ry4IHTP/oAgQEB1wBRM0MwbBTbPH/gghCUapi2uuMCMHAGCQG4VTP4QlJAxwXy4ISBRPZTgrry9IEcFSfCAPL0yPgoINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WGMs/JvoCyfkAggC9EVFW+RAU8vQCpFFUoH9wUWOAQAcHAXzIVSCCEMAAmetQBMsfWPoCASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFoEBAc8AyVQTBEcTUGZtbQgBzshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAQDMMApjTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG1tbSJus5lbIG7y0IBvIgGRMuL4QW8kE18D+CdvEAGhggnJw4C54w9/CgsB7oIJycOAcPsCECRwAwSBAIJQI8hxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsADAHcECRwAwSAQlAjyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAMAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAKbI+EMBzH8BygBVMFBDINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFhLLPwH6AsntVAIBIA8VAgEgEBEBFbtInbPFRzISNsRIEgEPuFHds8I2xBgSAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0z/6AFUwbBTg+CjXCwqDCbry4IkTAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwUAARwIAIBIBYXALm7vRgnBc7D1dLK57HoTsOdZKhRtmgnCd1jUtK2R8syLTry398WI5gnAgVcAbgGdjlM5YOq5HJbLDgnCdl05as07LczoOlm2UZuikgnBAznVp5xX50lCwHWFuJkeygCAUgYGQARsK+7UTQ0gABgAHWybuNDVpcGZzOi8vUW1WamRNc2R2ZWF0U3pZdkpIYmpHMkZpNXVYc3FhTW5SZmFLeHAzVHROY3c1VIIO/OGak=');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -2158,6 +2200,7 @@ const WithdrawAccount_types: ABIType[] = [
     {"name":"WithdrawRequest","header":3515948459,"fields":[{"name":"seqno","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"pubkey","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"signature","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"RequestBonusInternal","header":1085939001,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"beneficiary","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"SetDepositVaultParams","header":3478673722,"fields":[{"name":"active","type":{"kind":"simple","type":"bool","optional":true}},{"name":"min_claim_amount","type":{"kind":"simple","type":"int","optional":true,"format":257}},{"name":"bonus_percentage","type":{"kind":"simple","type":"int","optional":true,"format":257}}]},
+    {"name":"OwnerWithdrawRequest","header":4183652958,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
     {"name":"DepositInternal","header":1235050275,"fields":[{"name":"delegator","type":{"kind":"simple","type":"address","optional":false}},{"name":"referrer","type":{"kind":"simple","type":"address","optional":false}},{"name":"deposit_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"bonus_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
     {"name":"NotifyBonusInternal","header":781715065,"fields":[{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"refund_to","type":{"kind":"simple","type":"address","optional":false}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
     {"name":"JettonNotification","header":1935855772,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},

@@ -3,7 +3,7 @@ Contract: BadgeCollection
 BOC Size: 2170 bytes
 
 # Types
-Total Types: 38
+Total Types: 39
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -80,6 +80,10 @@ Signature: `RequestBonusInternal{amount:coins,beneficiary:address}`
 ## SetDepositVaultParams
 TLB: `set_deposit_vault_params#cf58593a active:Maybe bool min_claim_amount:Maybe int257 bonus_percentage:Maybe int257 = SetDepositVaultParams`
 Signature: `SetDepositVaultParams{active:Maybe bool,min_claim_amount:Maybe int257,bonus_percentage:Maybe int257}`
+
+## OwnerWithdrawRequest
+TLB: `owner_withdraw_request#f95d7a5e amount:coins = OwnerWithdrawRequest`
+Signature: `OwnerWithdrawRequest{amount:coins}`
 
 ## DepositInternal
 TLB: `deposit_internal#499d5f23 delegator:address referrer:address deposit_amount:coins bonus_amount:coins = DepositInternal`

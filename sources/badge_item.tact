@@ -151,7 +151,7 @@ trait BaseBadgeItem {
 
         return NftData {
             initialized: self.initialized, 
-            index: self.index, 
+            index: self.index,
             collection: self.collection, 
             owner: self.owner,
             individual_content: b.toCell()
