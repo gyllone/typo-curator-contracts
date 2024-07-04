@@ -1,7 +1,7 @@
 import { beginCell, toNano } from "@ton/core";
 import { sign } from "@ton/crypto";
 import { BadgeCollection } from "../../output/contract_BadgeCollection";
-import { Deployments, Client, BadgeCollectionUrl } from "../constants";
+import { Client, BadgeCollectionUrl } from "../constants";
 import { getKeyPair, getKeyPair2, getWallet } from "../utils";
 
 import * as dotenv from "dotenv";
@@ -17,6 +17,8 @@ async function main() {
     const content = beginCell().storeInt(0x01, 8).storeStringRefTail(BadgeCollectionUrl).endCell();
     const collection = await BadgeCollection.fromInit(wallet.address, content);
 
+    // expired after 5 min
+    const expiration = BigInt(Math.ceil(Date.now() / 1000) + 5 * 60);
     const item_url = "https://www.google.com";
     const item_index = BigInt(0);
     const item_owner = wallet.address;
@@ -25,6 +27,7 @@ async function main() {
     const digest = beginCell()
         .storeAddress(collection.address)
         .storeUint(item_index, 64)
+        .storeUint(expiration, 64)
         .storeAddress(item_owner)
         .storeAddress(item_authority)
         .storeRef(item_content)
@@ -40,6 +43,7 @@ async function main() {
         {
             $$type: "MintBadgeItem",
             index: item_index,
+            expiration: expiration,
             owner: item_owner,
             authority: item_authority,
             content: item_content,

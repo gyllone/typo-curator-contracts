@@ -1,6 +1,6 @@
 import { beginCell, toNano } from "@ton/core";
 import { BadgeCollection } from "../../output/contract_BadgeCollection";
-import { Client } from "../constants";
+import { BadgeCollectionUrl, Client } from "../constants";
 import { getKeyPair, getWallet } from "../utils";
 
 async function main() {
@@ -9,7 +9,7 @@ async function main() {
     const wallet = await getWallet(keypair);
     const sender = Client.open(wallet).sender(keypair.secretKey);
 
-    const badge_content = beginCell().endCell();
+    const badge_content = beginCell().storeInt(0x01, 8).storeStringRefTail(BadgeCollectionUrl).endCell();
     const badge_collection = await BadgeCollection.fromInit(wallet.address, badge_content);
     await Client.open(badge_collection).send(
         sender,

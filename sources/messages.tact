@@ -17,6 +17,7 @@ message WithdrawInternal {
 
 message WithdrawRequest {
     seqno: Int as uint64;
+    expiration: Int as uint64;
     amount: Int as coins;
     pubkey: Int;
     signature: Slice as remaining;
@@ -77,6 +78,7 @@ message(0xf8a7ea5) JettonTransfer {
 
 message MintBadgeItem {
     index: Int as uint64;
+    expiration: Int as uint64;
     owner: Address;
     authority: Address;
     content: Cell;

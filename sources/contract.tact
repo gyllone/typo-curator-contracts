@@ -39,7 +39,7 @@ contract DepositVault with BaseDepositVault, Deployable {
 // === Deposit Account Contract === //
 
 contract DepositAccount with BaseDepositAccount {
-    override const storageReserve: Int = ton("0.05");
+    override const storageReserve: Int = ton("0.03");
 
     // from BaseDepositAccount
     owner: Address; // from Ownable
@@ -138,7 +138,7 @@ contract BadgeCollection with BaseBadgeCollection, Deployable {
 // === Badge Item Contract === //
 
 contract BadgeItem with BaseBadgeItem {
-    override const storageReserve: Int = ton("0.05");
+    override const storageReserve: Int = ton("0.1");
 
     // from BaseBadgeItem
     initialized: Bool = false;

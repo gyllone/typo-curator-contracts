@@ -14,10 +14,12 @@ trait BaseBadgeCollection with OwnableTransferable {
 
     receive(msg: MintBadgeItem) {
         require(msg.index == self.next_item_index, "Invalid item index");
+        require(msg.expiration >= now(), "Signature expired");
 
         let digest: Int = beginCell()
             .storeAddress(myAddress())
             .storeUint(msg.index, 64)
+            .storeUint(msg.expiration, 64)
             .storeAddress(msg.owner)
             .storeAddress(msg.authority)
             .storeRef(msg.content)

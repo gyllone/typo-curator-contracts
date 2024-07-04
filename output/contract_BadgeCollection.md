@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: BadgeCollection
-BOC Size: 2170 bytes
+BOC Size: 2191 bytes
 
 # Types
 Total Types: 39
@@ -70,8 +70,8 @@ TLB: `withdraw_internal#c00099eb amount:coins owner:address pubkey:int257 = With
 Signature: `WithdrawInternal{amount:coins,owner:address,pubkey:int257}`
 
 ## WithdrawRequest
-TLB: `withdraw_request#d1911dab seqno:uint64 amount:coins pubkey:int257 signature:remainder<slice> = WithdrawRequest`
-Signature: `WithdrawRequest{seqno:uint64,amount:coins,pubkey:int257,signature:remainder<slice>}`
+TLB: `withdraw_request#8e9b47e0 seqno:uint64 expiration:uint64 amount:coins pubkey:int257 signature:remainder<slice> = WithdrawRequest`
+Signature: `WithdrawRequest{seqno:uint64,expiration:uint64,amount:coins,pubkey:int257,signature:remainder<slice>}`
 
 ## RequestBonusInternal
 TLB: `request_bonus_internal#40ba1d39 amount:coins beneficiary:address = RequestBonusInternal`
@@ -102,8 +102,8 @@ TLB: `jetton_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address 
 Signature: `JettonTransfer{query_id:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 ## MintBadgeItem
-TLB: `mint_badge_item#96a003d2 index:uint64 owner:address authority:address content:^cell signature:remainder<slice> = MintBadgeItem`
-Signature: `MintBadgeItem{index:uint64,owner:address,authority:address,content:^cell,signature:remainder<slice>}`
+TLB: `mint_badge_item#dac5aa2a index:uint64 expiration:uint64 owner:address authority:address content:^cell signature:remainder<slice> = MintBadgeItem`
+Signature: `MintBadgeItem{index:uint64,expiration:uint64,owner:address,authority:address,content:^cell,signature:remainder<slice>}`
 
 ## SetBadgeCollectionPubkey
 TLB: `set_badge_collection_pubkey#a315f92a pubkey:int257 = SetBadgeCollectionPubkey`
@@ -210,6 +210,7 @@ Argument: individual_content
 21420: Insufficient jetton amount
 36680: Only account
 36884: Invalid pubkey
+41096: Signature expired
 45150: Only jetton wallet
 48401: Invalid signature
 51754: Insufficient funds

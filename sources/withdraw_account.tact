@@ -15,10 +15,12 @@ trait BaseWithdrawAccount with Ownable {
         self.requireOwner();
         require(msg.seqno == self.seqno, "Invalid seqno");
         require(msg.amount > 0, "Zero amount");
+        require(msg.expiration >= now(), "Signature expired");
         
         let digest: Int = beginCell()
             .storeAddress(myAddress())
             .storeUint(msg.seqno, 64)
+            .storeUint(msg.expiration, 64)
             .storeCoins(msg.amount)
             .endCell()
             .hash();

@@ -13,14 +13,16 @@ async function main() {
     const wallet = await getWallet(keypair);
     const sender = Client.open(wallet).sender(keypair.secretKey);
 
-    // Sign message with another keypair
     const withdraw_account = await WithdrawAccount.fromInit(wallet.address, Deployments.WithdrawVault);
+    // expired after 5 min
+    const expiration = BigInt(Math.ceil(Date.now() / 1000) + 5 * 60);
     // seqno should be read from user withdraw account!!!
     const seqno = BigInt(0);
-    const withdraw_amount = BigInt(1000000);
+    const withdraw_amount = BigInt(1000000000);
     const digest = beginCell()
         .storeAddress(withdraw_account.address)
         .storeUint(seqno, 64)
+        .storeUint(expiration, 64)
         .storeCoins(withdraw_amount)
         .endCell()
         .hash();
@@ -30,10 +32,11 @@ async function main() {
 
     await Client.open(withdraw_account).send(
         sender,
-        { value: toNano("0.2") },
+        { value: toNano("0.1") },
         {
             $$type: "WithdrawRequest",
             seqno: seqno,
+            expiration: expiration,
             amount: withdraw_amount,
             pubkey: BigInt(`0x${keypair2.publicKey.toString("hex")}`),
             signature: beginCell().storeBuffer(sig).endCell(),

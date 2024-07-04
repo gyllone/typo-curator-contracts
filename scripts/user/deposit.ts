@@ -19,7 +19,7 @@ async function main() {
     const jetton_wallet = JettonWallet.createFromAddress(jetton_wallet_address);
 
     // prepare transaction data
-    const deposit_amount = BigInt(100000000);
+    const deposit_amount = BigInt(1000000000);
     const beneficiary = wallet.address; // as memo address
     const referrer = Address.parse("0QBVPVtmW01MVllgR-2UPVcB9ggeEHWE3qhGbRMTiwbF6vLb");
     const foward_payload = beginCell()

@@ -13,9 +13,9 @@ export const JettonData = {
 };
 
 export const Deployments = {
-    DepositVault: Address.parse("kQD52gmtiGKv_Oy-YW_f04BwNVspXmzO1OKwTIFhYWJ32k3_"),
-    WithdrawVault: Address.parse("kQA-I_XBSIaTdaKMLYa0Wqi0Poio3YyLc2quXxJNJrppFRiH"),
-    BadgeCollection: Address.parse("kQA7uSohAKNHmRM7lGvQZOwOjoZcfVmRG-ZRuA6JP_BYrA24"),
+    DepositVault: Address.parse("kQAjyl8aqN6yvu_XBcSTJoRUpATaK5dItTczEOxsBzcu67QJ"),
+    WithdrawVault: Address.parse("kQCnaD6-QxCFrVe0UUNO8CqAl0vwWcBllavAgpbzJ7srP68Z"),
+    BadgeCollection: Address.parse("kQCSUk05lgmU_Eyz917rm31aImnGYS16sN1pG82m-SgVMNqR"),
 };
 
 export const BadgeCollectionUrl = "https://www.google.com";
