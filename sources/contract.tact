@@ -39,7 +39,7 @@ contract DepositVault with BaseDepositVault, Deployable {
 // === Deposit Account Contract === //
 
 contract DepositAccount with BaseDepositAccount {
-    override const storageReserve: Int = ton("0.03");
+    override const storageReserve: Int = ton("0.02");
 
     // from BaseDepositAccount
     owner: Address; // from Ownable
@@ -91,7 +91,7 @@ contract WithdrawVault with BaseWithdrawVault, Deployable {
 // === Withdraw Account Contract === //
 
 contract WithdrawAccount with BaseWithdrawAccount, Deployable {
-    override const storageReserve: Int = ton("0.03");
+    override const storageReserve: Int = ton("0.02");
 
     // from BaseAccount
     owner: Address; // from Ownable
@@ -114,7 +114,7 @@ contract WithdrawAccount with BaseWithdrawAccount, Deployable {
 // === Badge Collection Contract === //
 
 contract BadgeCollection with BaseBadgeCollection, Deployable {
-    override const storageReserve: Int = ton("0.1");
+    override const storageReserve: Int = ton("0.05");
 
     // from BaseBadgeCollection
     owner: Address; // from OwnableTransferrable
@@ -138,7 +138,7 @@ contract BadgeCollection with BaseBadgeCollection, Deployable {
 // === Badge Item Contract === //
 
 contract BadgeItem with BaseBadgeItem {
-    override const storageReserve: Int = ton("0.1");
+    override const storageReserve: Int = ton("0.05");
 
     // from BaseBadgeItem
     initialized: Bool = false;

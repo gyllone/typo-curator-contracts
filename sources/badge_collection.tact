@@ -32,22 +32,17 @@ trait BaseBadgeCollection with OwnableTransferable {
 
         self.next_item_index += 1;
 
-        nativeReserve(self.storageReserve, ReserveExact);
-
         let sinit: StateInit = self._get_badge_item_init(msg.index);
-        send(SendParameters {
-            to: contractAddress(sinit), 
-            value: 0,
-            bounce: false,
-            mode: SendRemainingBalance,
-            body: MintBadgeItemInternal {
+        self.forward(
+            contractAddress(sinit),
+            MintBadgeItemInternal {
                 owner: msg.owner,
                 content: msg.content,
                 authority: msg.authority
             }.toCell(),
-            code: sinit.code,
-            data: sinit.data
-        });
+            false,
+            sinit,
+        );
     }
 
     receive(msg: SetBadgeCollectionPubkey) {

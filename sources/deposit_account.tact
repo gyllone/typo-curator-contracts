@@ -56,16 +56,15 @@ trait BaseDepositAccount with Ownable {
         let amount: Int = self.bonus_amount;
         self.bonus_amount = 0;
 
-        send(SendParameters {
-            bounce: true,
-            to: self.vault,
-            value: 0,
-            mode: SendRemainingValue,
-            body: RequestBonusInternal {
+        self.forward(
+            self.vault,
+            RequestBonusInternal {
                 amount: amount,
                 beneficiary: self.owner,
-            }.toCell()
-        });
+            }.toCell(),
+            true, // should bounce
+            null,
+        );
     }
 
     bounced(src: bounced<RequestBonusInternal>) {

@@ -61,13 +61,9 @@ trait BaseDepositVault with OwnableTransferable {
         self.jetton_amount -= msg.amount;
         self.claimed_bonus_amount += msg.amount;
 
-        nativeReserve(self.storageReserve, ReserveExact);
-        send(SendParameters {
-            bounce: false,
-            to: self._get_jetton_wallet_address(),
-            value: 0,
-            mode: SendRemainingBalance,
-            body: JettonTransfer {
+        self.forward(
+            self._get_jetton_wallet_address(),
+            JettonTransfer {
                 query_id: 0,
                 amount: msg.amount,
                 destination: msg.beneficiary,
@@ -76,7 +72,9 @@ trait BaseDepositVault with OwnableTransferable {
                 forward_ton_amount: 0,
                 forward_payload: beginCell().storeBool(false).asSlice()
             }.toCell(),
-        });
+            false,
+            null,
+        );
     }
 
     receive(msg: SetDepositVaultParams) {
@@ -102,13 +100,9 @@ trait BaseDepositVault with OwnableTransferable {
 
         self.jetton_amount -= msg.amount;
 
-        nativeReserve(self.storageReserve, ReserveExact);
-        send(SendParameters {
-            bounce: false,
-            to: self._get_jetton_wallet_address(),
-            value: 0,
-            mode: SendRemainingBalance,
-            body: JettonTransfer {
+        self.forward(
+            self._get_jetton_wallet_address(),
+            JettonTransfer {
                 query_id: 0,
                 amount: msg.amount,
                 destination: self.owner,
@@ -116,8 +110,10 @@ trait BaseDepositVault with OwnableTransferable {
                 custom_payload: null,
                 forward_ton_amount: 0,
                 forward_payload: beginCell().storeBool(false).asSlice()
-            }.toCell()
-        });
+            }.toCell(),
+            false,
+            null,
+        );
     }
 
     inline fun _get_jetton_wallet_address(): Address {

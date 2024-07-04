@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: DepositVault
-BOC Size: 2948 bytes
+BOC Size: 2747 bytes
 
 # Types
 Total Types: 39

@@ -48,13 +48,9 @@ trait BaseWithdrawVault with OwnableTransferable {
         self.jetton_amount -= msg.amount;
         self.withdrawn_amount += msg.amount;
 
-        nativeReserve(self.storageReserve, ReserveExact);
-        send(SendParameters {
-            bounce: false,
-            to: self._get_jetton_wallet_address(),
-            value: 0,
-            mode: SendRemainingBalance,
-            body: JettonTransfer {
+        self.forward(
+            self._get_jetton_wallet_address(),
+            JettonTransfer {
                 query_id: 0,
                 amount: msg.amount,
                 destination: msg.owner,
@@ -62,8 +58,10 @@ trait BaseWithdrawVault with OwnableTransferable {
                 custom_payload: null,
                 forward_ton_amount: 0,
                 forward_payload: beginCell().storeBool(false).asSlice()
-            }.toCell()
-        });
+            }.toCell(),
+            false,
+            null,
+        );
     }
 
     receive(msg: OwnerWithdrawRequest) {
@@ -72,13 +70,9 @@ trait BaseWithdrawVault with OwnableTransferable {
 
         self.jetton_amount -= msg.amount;
 
-        nativeReserve(self.storageReserve, ReserveExact);
-        send(SendParameters {
-            bounce: false,
-            to: self._get_jetton_wallet_address(),
-            value: 0,
-            mode: SendRemainingBalance,
-            body: JettonTransfer {
+        self.forward(
+            self._get_jetton_wallet_address(),
+            JettonTransfer {
                 query_id: 0,
                 amount: msg.amount,
                 destination: self.owner,
@@ -86,8 +80,10 @@ trait BaseWithdrawVault with OwnableTransferable {
                 custom_payload: null,
                 forward_ton_amount: 0,
                 forward_payload: beginCell().storeBool(false).asSlice()
-            }.toCell()
-        });
+            }.toCell(),
+            false,
+            null,
+        );
     }
 
     inline fun _get_jetton_wallet_address(): Address {

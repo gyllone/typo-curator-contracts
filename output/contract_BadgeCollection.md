@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: BadgeCollection
-BOC Size: 2191 bytes
+BOC Size: 2106 bytes
 
 # Types
 Total Types: 39

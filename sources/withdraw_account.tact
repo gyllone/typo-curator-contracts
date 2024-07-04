@@ -32,17 +32,16 @@ trait BaseWithdrawAccount with Ownable {
         self.seqno += 1;
         self.withdrawn_amount += msg.amount;
 
-        send(SendParameters {
-            bounce: true, // allow bounce
-            to: self.vault,
-            value: 0,
-            mode: SendRemainingValue,
-            body: WithdrawInternal {
+        self.forward(
+            self.vault,
+            WithdrawInternal {
                 amount: msg.amount,
                 owner: self.owner,
                 pubkey: msg.pubkey
-            }.toCell()
-        });
+            }.toCell(),
+            true, // should bounce
+            null,
+        );
     }
 
     bounced(src: bounced<WithdrawInternal>) {

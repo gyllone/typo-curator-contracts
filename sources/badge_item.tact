@@ -28,12 +28,9 @@ trait BaseBadgeItem {
             content = self.content;
         }
 
-        send(SendParameters {
-            to: msg.dest,
-            value: 0,
-            bounce: true, // should bounce
-            mode: SendRemainingValue,
-            body: OwnerInfo {
+        self.forward(
+            msg.dest,
+            OwnerInfo {
                 query_id: msg.query_id, 
                 item_id: self.index, 
                 initiator: sender(),
@@ -41,8 +38,10 @@ trait BaseBadgeItem {
                 data: msg.forward_payload, 
                 revoked_at: self.revoked_at, 
                 content: content
-            }.toCell()
-        });
+            }.toCell(),
+            true, // should bounce
+            null,
+        );
     }
 
     receive(msg: ProveOwnership) {
@@ -53,36 +52,34 @@ trait BaseBadgeItem {
             content = self.content;
         }
 
-        send(SendParameters {
-            to: msg.dest,
-            value: 0,
-            bounce: true, // should bounce
-            mode: SendRemainingValue,
-            body: OwnershipProof {
+        self.forward(
+            msg.dest,
+            OwnershipProof {
                 query_id: msg.query_id, 
                 item_id: self.index, 
                 owner: self.owner!!,
                 data: msg.forward_payload,
                 revoked_at: self.revoked_at, 
                 content: content
-            }.toCell()
-        });
+            }.toCell(),
+            true, // should bounce
+            null,
+        );
     }
 
     receive(msg: GetStaticData) {
         require(self.initialized, "Not initialized");
 
-        send(SendParameters {
-            to: sender(),
-            value: 0,
-            bounce: false,
-            mode: SendRemainingValue,
-            body: ReportStaticData{
+        self.forward(
+            sender(),
+            ReportStaticData{
                 query_id: msg.query_id,
                 index_id: self.index,
                 collection: self.collection
             }.toCell(),
-        });
+            false,
+            null,
+        );
     }
 
     receive(msg: Destroy) {
@@ -96,7 +93,7 @@ trait BaseBadgeItem {
             to: self.owner!!,
             value: 0,
             bounce: false,
-            mode: SendRemainingBalance,
+            mode: SendRemainingBalance + SendDestroyIfZero + SendIgnoreErrors,
             body: Excesses{ query_id: msg.query_id }.toCell()
         });
     }
@@ -113,15 +110,12 @@ trait BaseBadgeItem {
         require(self.initialized, "Not initialized");
         require(sender() == self.owner!!, "Invalid sender");
 
-        nativeReserve(self.storageReserve, ReserveExact);
-
-        send(SendParameters {
-            to: self.owner!!,
-            value: 0,
-            bounce: false,
-            mode: SendRemainingBalance,
-            body: Excesses{ query_id: msg.query_id }.toCell()
-        });
+        self.forward(
+            self.owner!!,
+            Excesses{ query_id: msg.query_id }.toCell(),
+            false,
+            null,
+        );
     }
 
     receive(msg: TransferItem) {
@@ -129,12 +123,12 @@ trait BaseBadgeItem {
     }
 
     bounced(msg: bounced<OwnershipProof>) {
-        send(SendParameters{
-            to: self.owner!!,
-            value: 0,
-            mode: SendRemainingValue,
-            body: OwnershipProofBounced{ query_id: msg.query_id }.toCell()
-        });
+        self.forward(
+            self.owner!!,
+            OwnershipProofBounced{ query_id: msg.query_id }.toCell(),
+            false,
+            null,
+        );
     }
 
     // === GETTERS ===

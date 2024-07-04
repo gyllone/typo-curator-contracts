@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: DepositAccount
-BOC Size: 2166 bytes
+BOC Size: 2092 bytes
 
 # Types
 Total Types: 39

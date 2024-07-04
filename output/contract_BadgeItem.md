@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: BadgeItem
-BOC Size: 2403 bytes
+BOC Size: 2660 bytes
 
 # Types
 Total Types: 39

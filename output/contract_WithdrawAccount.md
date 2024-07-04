@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: WithdrawAccount
-BOC Size: 1367 bytes
+BOC Size: 1296 bytes
 
 # Types
 Total Types: 39
