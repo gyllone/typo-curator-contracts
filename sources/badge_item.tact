@@ -8,7 +8,7 @@ trait BaseBadgeItem {
     index: Int;
     collection: Address;
     owner: Address?;
-    content: Cell?;
+    // content: Cell?;
     authority: Address?;
     revoked_at: Int;
 
@@ -17,16 +17,16 @@ trait BaseBadgeItem {
         
         self.initialized = true;
         self.owner = msg.owner;
-        self.content = msg.content;
+        // self.content = msg.content;
         self.authority = msg.authority;
     }
 
     receive(msg: RequestOwner) {
         require(self.initialized, "Not initialized");
-        let content: Cell? = null;
-        if (msg.with_content) {
-            content = self.content;
-        }
+        // let content: Cell? = null;
+        // if (msg.with_content) {
+        //     content = self.content;
+        // }
 
         self.forward(
             msg.dest,
@@ -37,7 +37,7 @@ trait BaseBadgeItem {
                 owner: self.owner!!, 
                 data: msg.forward_payload, 
                 revoked_at: self.revoked_at, 
-                content: content
+                content: null // content is always null
             }.toCell(),
             true, // should bounce
             null,
@@ -47,10 +47,10 @@ trait BaseBadgeItem {
     receive(msg: ProveOwnership) {
         require(self.initialized, "Not initialized");
         require(self.owner == sender(), "Invalid sender");
-        let content: Cell? = null;
-        if (msg.with_content) {
-            content = self.content;
-        }
+        // let content: Cell? = null;
+        // if (msg.with_content) {
+        //     content = self.content;
+        // }
 
         self.forward(
             msg.dest,
@@ -60,7 +60,7 @@ trait BaseBadgeItem {
                 owner: self.owner!!,
                 data: msg.forward_payload,
                 revoked_at: self.revoked_at, 
-                content: content
+                content: null // content is always null
             }.toCell(),
             true, // should bounce
             null,
@@ -134,21 +134,12 @@ trait BaseBadgeItem {
     // === GETTERS ===
 
     get fun get_nft_data(): NftData {
-        let b: StringBuilder = beginString();
-        let collection_str: String = "";
-        if (self.content != null) {
-            collection_str = (self.content!!).asSlice().asString();
-        }
-        b.append(collection_str);
-        b.append(self.index.toString());
-        b.append(".json");
-
         return NftData {
             initialized: self.initialized, 
             index: self.index,
             collection: self.collection, 
             owner: self.owner,
-            individual_content: b.toCell()
+            individual_content: beginString().toCell()
         };
     }
 

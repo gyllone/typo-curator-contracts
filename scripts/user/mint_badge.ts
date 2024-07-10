@@ -19,18 +19,17 @@ async function main() {
 
     // expired after 5 min
     const expiration = BigInt(Math.ceil(Date.now() / 1000) + 5 * 60);
-    const item_url = "https://www.google.com";
     const item_index = BigInt(0);
     const item_owner = wallet.address;
     const item_authority = wallet.address;
-    const item_content = beginCell().storeInt(0x01, 8).storeStringRefTail(item_url).endCell();
+    // const item_content = beginCell().storeInt(0x01, 8).storeStringRefTail(item_uri).endCell();
     const digest = beginCell()
         .storeAddress(collection.address)
         .storeUint(item_index, 64)
         .storeUint(expiration, 64)
         .storeAddress(item_owner)
         .storeAddress(item_authority)
-        .storeRef(item_content)
+        // .storeStringRefTail(item_url)
         .endCell()
         .hash();
     // Keypair2 should be stored backend
@@ -46,7 +45,7 @@ async function main() {
             expiration: expiration,
             owner: item_owner,
             authority: item_authority,
-            content: item_content,
+            // content: item_content,
             signature: beginCell().storeBuffer(sig).endCell(),
         }
     );

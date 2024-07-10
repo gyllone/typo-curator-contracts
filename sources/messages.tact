@@ -81,7 +81,7 @@ message MintBadgeItem {
     expiration: Int as uint64;
     owner: Address;
     authority: Address;
-    content: Cell;
+    // content: Cell;
     signature: Slice as remaining;
 }
 
@@ -93,7 +93,7 @@ message SetBadgeCollectionPubkey {
 
 message MintBadgeItemInternal {
     owner: Address;
-    content: Cell;
+    // content: Cell;
     authority: Address;
 }
 

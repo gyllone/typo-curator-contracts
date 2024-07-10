@@ -18,4 +18,4 @@ export const Deployments = {
     BadgeCollection: Address.parse("kQCUtSKM2VWRIJsReARN2hL9ULRg-85kHDpMisI_IOxTvNyZ"),
 };
 
-export const BadgeCollectionUrl = "https://www.google.com";
+export const BadgeCollectionUrl = "ipfs://xxxxx/";

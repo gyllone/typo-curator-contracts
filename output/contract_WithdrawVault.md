@@ -102,16 +102,16 @@ TLB: `jetton_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address 
 Signature: `JettonTransfer{query_id:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 ## MintBadgeItem
-TLB: `mint_badge_item#dac5aa2a index:uint64 expiration:uint64 owner:address authority:address content:^cell signature:remainder<slice> = MintBadgeItem`
-Signature: `MintBadgeItem{index:uint64,expiration:uint64,owner:address,authority:address,content:^cell,signature:remainder<slice>}`
+TLB: `mint_badge_item#8f2d1a47 index:uint64 expiration:uint64 owner:address authority:address signature:remainder<slice> = MintBadgeItem`
+Signature: `MintBadgeItem{index:uint64,expiration:uint64,owner:address,authority:address,signature:remainder<slice>}`
 
 ## SetBadgeCollectionPubkey
 TLB: `set_badge_collection_pubkey#a315f92a pubkey:int257 = SetBadgeCollectionPubkey`
 Signature: `SetBadgeCollectionPubkey{pubkey:int257}`
 
 ## MintBadgeItemInternal
-TLB: `mint_badge_item_internal#00d80618 owner:address content:^cell authority:address = MintBadgeItemInternal`
-Signature: `MintBadgeItemInternal{owner:address,content:^cell,authority:address}`
+TLB: `mint_badge_item_internal#4dcf318c owner:address authority:address = MintBadgeItemInternal`
+Signature: `MintBadgeItemInternal{owner:address,authority:address}`
 
 ## RequestOwner
 TLB: `request_owner#d0c3bfea query_id:uint64 dest:address forward_payload:^cell with_content:bool = RequestOwner`

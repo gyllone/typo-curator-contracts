@@ -22,7 +22,7 @@ trait BaseBadgeCollection with OwnableTransferable {
             .storeUint(msg.expiration, 64)
             .storeAddress(msg.owner)
             .storeAddress(msg.authority)
-            .storeRef(msg.content)
+            // .storeRef(msg.content)
             .endCell()
             .hash();
         require(
@@ -37,7 +37,7 @@ trait BaseBadgeCollection with OwnableTransferable {
             contractAddress(sinit),
             MintBadgeItemInternal {
                 owner: msg.owner,
-                content: msg.content,
+                // content: msg.content,
                 authority: msg.authority
             }.toCell(),
             false,
@@ -61,11 +61,10 @@ trait BaseBadgeCollection with OwnableTransferable {
     get fun get_collection_data(): CollectionData {
         let b: StringBuilder = beginString();
         b.append(self.content.asSlice().asString());
-        b.append(".json");
-
+        b.append("collection.json");
         return CollectionData {
             next_item_index: self.next_item_index, 
-            content: b.toCell(), 
+            content: b.toCell(),
             owner: self.owner
         };
     }
@@ -75,10 +74,12 @@ trait BaseBadgeCollection with OwnableTransferable {
         return contractAddress(sinit);
     }
     
-    get fun get_nft_content(index: Int, individual_content: Cell): Cell { 
+    get fun get_nft_content(index: Int, _individual_content: Cell): Cell {
         let b: StringBuilder = beginString();
         b.append(self.content.asSlice().asString());
-        b.append(individual_content.asSlice().asString());
+        b.append("items/");
+        b.append(index.toString());
+        b.append(".json");
         return b.toCell();
     }
 }
