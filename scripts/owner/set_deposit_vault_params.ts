@@ -12,7 +12,7 @@ async function main() {
     const deposit_vault = DepositVault.fromAddress(Deployments.DepositVault);
     await Client.open(deposit_vault).send(
         sender,
-        { value: toNano("0.1") },
+        { value: toNano("0.05") },
         {
             $$type: "SetDepositVaultParams",
             active: true,

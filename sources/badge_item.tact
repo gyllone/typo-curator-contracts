@@ -14,11 +14,13 @@ trait BaseBadgeItem {
 
     receive(msg: MintBadgeItemInternal) {
         require(sender() == self.collection, "Invalid sender");
-        
+
         self.initialized = true;
         self.owner = msg.owner;
-        // self.content = msg.content;
         self.authority = msg.authority;
+
+        // refund gas
+        self.forward(msg.owner, null, false, null);
     }
 
     receive(msg: RequestOwner) {

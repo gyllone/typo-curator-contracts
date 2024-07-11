@@ -13,7 +13,7 @@ async function main() {
     const withdraw_vault = WithdrawVault.fromAddress(Deployments.WithdrawVault);
     await Client.open(withdraw_vault).send(
         sender,
-        { value: toNano("0.03") },
+        { value: toNano("0.05") },
         {
             $$type: "ChangeOwner",
             queryId: BigInt(0),

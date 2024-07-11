@@ -15,7 +15,7 @@ export const JettonData = {
 export const Deployments = {
     DepositVault: Address.parse("kQCRma_WUa6MCcUnpSccTEs3PIoqWs6BMUItkCkYovnFNDNW"),
     WithdrawVault: Address.parse("kQA7ig_dMrL7P-nn1zIV1rmb4knIDHc0Io0VsLPoAq8ycjk4"),
-    BadgeCollection: Address.parse("kQCUtSKM2VWRIJsReARN2hL9ULRg-85kHDpMisI_IOxTvNyZ"),
+    BadgeCollection: Address.parse("kQC0V-9gCDvkCN7T_ZeqQAYl2ysqcyeb75hLyN8wQSOR-K3u"),
 };
 
 export const BadgeCollectionUrl = "ipfs://xxxxx/";

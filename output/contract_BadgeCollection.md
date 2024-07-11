@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: BadgeCollection
-BOC Size: 2253 bytes
+BOC Size: 2154 bytes
 
 # Types
 Total Types: 39
@@ -102,8 +102,8 @@ TLB: `jetton_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address 
 Signature: `JettonTransfer{query_id:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 ## MintBadgeItem
-TLB: `mint_badge_item#8f2d1a47 index:uint64 expiration:uint64 owner:address authority:address signature:remainder<slice> = MintBadgeItem`
-Signature: `MintBadgeItem{index:uint64,expiration:uint64,owner:address,authority:address,signature:remainder<slice>}`
+TLB: `mint_badge_item#b0bd686f index:uint64 expiration:uint64 signature:remainder<slice> = MintBadgeItem`
+Signature: `MintBadgeItem{index:uint64,expiration:uint64,signature:remainder<slice>}`
 
 ## SetBadgeCollectionPubkey
 TLB: `set_badge_collection_pubkey#a315f92a pubkey:int257 = SetBadgeCollectionPubkey`

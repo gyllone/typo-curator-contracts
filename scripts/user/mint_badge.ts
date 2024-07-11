@@ -20,16 +20,11 @@ async function main() {
     // expired after 5 min
     const expiration = BigInt(Math.ceil(Date.now() / 1000) + 5 * 60);
     const item_index = BigInt(0);
-    const item_owner = wallet.address;
-    const item_authority = wallet.address;
-    // const item_content = beginCell().storeInt(0x01, 8).storeStringRefTail(item_uri).endCell();
     const digest = beginCell()
         .storeAddress(collection.address)
+        .storeAddress(wallet.address)
         .storeUint(item_index, 64)
         .storeUint(expiration, 64)
-        .storeAddress(item_owner)
-        .storeAddress(item_authority)
-        // .storeStringRefTail(item_url)
         .endCell()
         .hash();
     // Keypair2 should be stored backend
@@ -43,9 +38,6 @@ async function main() {
             $$type: "MintBadgeItem",
             index: item_index,
             expiration: expiration,
-            owner: item_owner,
-            authority: item_authority,
-            // content: item_content,
             signature: beginCell().storeBuffer(sig).endCell(),
         }
     );

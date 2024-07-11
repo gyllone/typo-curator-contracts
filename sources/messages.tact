@@ -79,9 +79,6 @@ message(0xf8a7ea5) JettonTransfer {
 message MintBadgeItem {
     index: Int as uint64;
     expiration: Int as uint64;
-    owner: Address;
-    authority: Address;
-    // content: Cell;
     signature: Slice as remaining;
 }
 
@@ -93,7 +90,6 @@ message SetBadgeCollectionPubkey {
 
 message MintBadgeItemInternal {
     owner: Address;
-    // content: Cell;
     authority: Address;
 }
 

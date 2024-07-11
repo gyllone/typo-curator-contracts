@@ -1,5 +1,5 @@
 import { toNano } from "@ton/core";
-import { DepositVault } from "../../output/contract_DepositVault";
+import { BadgeCollection } from "../../output/contract_BadgeCollection";
 import { Client, Deployments } from "../constants";
 import { getKeyPair, getWallet } from "../utils";
 
@@ -10,8 +10,8 @@ async function main() {
     const sender = Client.open(wallet).sender(keypair.secretKey);
 
     const new_owner = wallet.address;
-    const deposit_vault = DepositVault.fromAddress(Deployments.DepositVault);
-    await Client.open(deposit_vault).send(
+    const collection = BadgeCollection.fromAddress(Deployments.BadgeCollection);
+    await Client.open(collection).send(
         sender,
         { value: toNano("0.05") },
         {
